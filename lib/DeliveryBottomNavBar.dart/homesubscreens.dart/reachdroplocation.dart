@@ -150,7 +150,7 @@ class _ReachDropLocationBottomSheetState
 
 // Fetch directions from Google Directions API
   Future<void> _getDirections(LatLng origin, LatLng destination) async {
-    final String apiKey = "AIzaSyCJsmwlhksyLs9IGRpkbM90c-RqtIBHqtQ";
+    final String apiKey ="AIzaSyDxQfy4Rbp2wno25FBwr5xwHLqh9WRUg-w";
     // "AIzaSyCxjzqu6TtZl--tNK_tK6IhAdrTo2AwYc0";
     final String url = 'https://maps.googleapis.com/maps/api/directions/json'
         '?origin=${origin.latitude},${origin.longitude}'
@@ -233,7 +233,7 @@ class _ReachDropLocationBottomSheetState
   }
 
   Future<String> _getPolylineString(LatLng origin, LatLng destination) async {
-    final String apiKey = "AIzaSyCJsmwlhksyLs9IGRpkbM90c-RqtIBHqtQ";
+    final String apiKey = "AIzaSyDxQfy4Rbp2wno25FBwr5xwHLqh9WRUg-w";
    // "AIzaSyCxjzqu6TtZl--tNK_tK6IhAdrTo2AwYc0";
     final String url = 'https://maps.googleapis.com/maps/api/directions/json'
         '?origin=${origin.latitude},${origin.longitude}'
