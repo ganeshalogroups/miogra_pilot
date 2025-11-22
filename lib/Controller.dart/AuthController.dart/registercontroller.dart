@@ -20,17 +20,25 @@ class RegisterController extends GetxController {
   final stepEmergMobileNum = ''.obs;
   final steptEmail = ''.obs;
   final steptPincode = ''.obs;
+  final stept1Street = ''.obs;
+  final stept1Street2 = ''.obs;
+  final stept1city = ''.obs;
+  final stept1State = ''.obs;
   final vehicleNumb = ''.obs;
   final bankName = ''.obs;
+  final branchName = ''.obs;
+  final beneficiaryName = ''.obs;
   final acctype = ''.obs;
   final accNumb = ''.obs;
   final reAccNumb = ''.obs;
   final ifscCode = ''.obs;
-  final jobType = 'Part-Time'.obs;
+  final pan = ''.obs;
+  final jobType = ''.obs;
   final vehicleType = 'E-bike'.obs;
   final regionData = ''.obs;
   final deliveryBag = false.obs;
   final tShirt = false.obs;
+  final termsCondition = false.obs;
   final aadharFrontUrl = ''.obs;
   final aadharBackUrl = ''.obs;
   final licenseFrontUrl = ''.obs;
@@ -70,6 +78,18 @@ class RegisterController extends GetxController {
   void restPincodeGet(String newValue) {
     steptPincode.value = newValue;
   }
+  void restStreet1Get(String newValue) {
+    stept1Street.value = newValue;
+  }
+  void restStreet2Get(String newValue) {
+    stept1Street2.value = newValue;
+  }
+  void restcityGet(String newValue) {
+    stept1city.value = newValue;
+  }
+  void restStateGet(String newValue) {
+    stept1State.value = newValue;
+  }
 
   void vehicleNumbGet(String newValue) {
     vehicleNumb.value = newValue;
@@ -77,6 +97,13 @@ class RegisterController extends GetxController {
 
   void bankNameGet(String newValue) {
     bankName.value = newValue;
+  }
+
+  void branchNameGet(String newValue) {
+    branchName.value = newValue;
+  }
+  void beneficiaryNameGet(String newValue) {
+    beneficiaryName.value = newValue;
   }
 
   void acctypeGet(String newValue) {
@@ -109,6 +136,10 @@ class RegisterController extends GetxController {
 
   void updateTShirt(bool value) {
     tShirt.value = value;
+  }
+
+  void updateTermsConditions(bool value) {
+    termsCondition.value = value;
   }
 
   var isPersonalInfoCompleted = false.obs;
@@ -170,6 +201,10 @@ class RegisterController extends GetxController {
     jobType: '',
     aadharFront: '',
     aadharBack: '',
+    street: '',
+    Street2: '',
+    city: '',
+    state: '',
   ).obs;
 
   var vehicleInfo = VehicleInfo(
@@ -184,8 +219,11 @@ class RegisterController extends GetxController {
   var bankDetails = BankDetailsInfo(
     accountNumber: '',
     ifscCode: '',
+    pan: '',
     bankName: '',
     accountType: '',
+    beneficiaryName: '',
+    branchName: ''
   ).obs;
 
   var workSetupInfo = WorkSetupInfo(
@@ -240,21 +278,24 @@ class RegisterController extends GetxController {
           "parentAdminUserId": parentadminuserid.value,
           "lastSeen": null,
           "BankDetails": {
+            "beneficiary_name":bankDetails.value.beneficiaryName,
             "bankName": bankDetails.value.bankName,
             "acType": bankDetails.value.accountType,
             "accountNumber": bankDetails.value.accountNumber,
             "ifscCode": bankDetails.value.ifscCode,
-            "branchName": "kottar",
+            "branchName": bankDetails.value.branchName,
+            "panCardNo":bankDetails.value.pan,
           },
           "address": {
             "houseNo": null,
             "district": null,
             "companyName": null,
             "fullAddress": null,
-            "street": null,
-            "city": null,
-            "state": null,
-            "country": null,
+            "street1": personalInfo.value.street,
+            "street2": personalInfo.value.Street2,
+            "city": personalInfo.value.city,
+            "state": personalInfo.value.state,
+            "country": "India",
             "postalCode": int.parse(steptPincode.toString()),
             "landMark": null,
             "contactPerson": null,
@@ -284,10 +325,11 @@ class RegisterController extends GetxController {
           }
         }),
       );
+       var result = jsonDecode(response.body);
       if (response.statusCode == 200 ||
           response.statusCode == 201 ||
           response.statusCode == 202) {
-        var result = jsonDecode(response.body);
+       
         registerdata = result;
 
         var message = result['message'] ?? 'Registration successful';
@@ -313,6 +355,20 @@ class RegisterController extends GetxController {
         // Handle error response
         registerdata = null;
 
+        if(result["data"]=="Pan Card Already Exist"){
+  Get.snackbar(
+     'Registration Failed',
+       result["data"] ,
+     
+          backgroundColor: Customcolors.decorationBlueOrange,
+          colorText: Customcolors.decorationBlack,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+
+        }
+else{
+
+print("error   ${response.statusCode}     ${response.body}");
         Get.snackbar(
           'Registration Failed',
           'Please try again later.',
@@ -320,7 +376,7 @@ class RegisterController extends GetxController {
           colorText: Customcolors.decorationBlack,
           snackPosition: SnackPosition.BOTTOM,
         );
-      }
+      }}
     } catch (e) {
       Get.snackbar(
         'Registration Error',
@@ -328,7 +384,11 @@ class RegisterController extends GetxController {
         backgroundColor: Customcolors.decorationBlueOrange,
         colorText: Customcolors.decorationBlack,
         snackPosition: SnackPosition.BOTTOM,
+
+
       );
+
+      print("ERROR $e");
     } finally {
       isDataLoading(false);
     }
@@ -345,6 +405,11 @@ class RegisterPersonalInfo {
   String aadharFront;
   String aadharBack;
   String pincode;
+  String street;
+  String Street2;
+  String city;
+  String state;
+  
 
   RegisterPersonalInfo({
     required this.name,
@@ -356,6 +421,10 @@ class RegisterPersonalInfo {
     required this.aadharFront,
     required this.aadharBack,
     required this.pincode,
+    required this.street,
+    required this.Street2,
+    required this.city,
+    required this.state
   });
 }
 
@@ -380,14 +449,20 @@ class VehicleInfo {
 class BankDetailsInfo {
   String accountNumber;
   String ifscCode;
+  String pan;
   String bankName;
   String accountType;
+  String beneficiaryName;
+  String branchName;
 
   BankDetailsInfo({
     required this.accountNumber,
     required this.ifscCode,
+    required this.pan,
     required this.bankName,
     required this.accountType,
+    required this.beneficiaryName,
+    required this.branchName,
   });
 }
 

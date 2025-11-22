@@ -1,11 +1,15 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:convert';
+
 import 'package:flutter_native_contact_picker/model/contact.dart';
 import 'package:miogra_service/Controller.dart/AuthController.dart/fileuploadcontroller.dart';
 import 'package:miogra_service/Controller.dart/AuthController.dart/registercontroller.dart';
+import 'package:miogra_service/UrlList.dart/api.dart';
 import 'package:miogra_service/Validators.dart/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:miogra_service/main.dart';
 import 'package:miogra_service/widgets.dart/custom_button.dart';
 import 'package:miogra_service/widgets.dart/custom_identityproof.dart';
 import 'package:miogra_service/widgets.dart/custom_container.dart';
@@ -15,7 +19,7 @@ import 'package:miogra_service/widgets.dart/custom_text.dart';
 import 'package:miogra_service/widgets.dart/custom_textformfield.dart';
 import 'package:miogra_service/widgets.dart/custom_textstyle.dart';
 import 'dart:io';
-
+import 'package:http/http.dart'as http;
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 
   
@@ -72,6 +76,10 @@ class _PersonalInformationState extends State<PersonalInformation> {
   //final TextEditingController _emergencyContactController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pincodeController = TextEditingController();
+  final TextEditingController _streetController = TextEditingController();
+  final TextEditingController _streetController2 = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _stateController = TextEditingController();
   // final FlutterContactPicker _contactPicker =
   //     FlutterContactPicker();
       final FlutterNativeContactPicker _contactPicker = FlutterNativeContactPicker();
@@ -79,6 +87,53 @@ class _PersonalInformationState extends State<PersonalInformation> {
   final TextEditingController _textFieldController = TextEditingController();
   late TextEditingController _countryController;
   final _formkey = GlobalKey<FormState>();
+
+  List<String> stateList =  [];
+String? selectedState;
+void showStateDialog({
+  required BuildContext context,
+  required List<String> states,
+  required String? selectedState,
+  required Function(String) onSelected,
+}) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: const Text(
+          "Select State",
+         // style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+
+        content: SizedBox(
+          width: double.maxFinite,
+
+          // Auto height based on items  
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: states.length,
+            itemBuilder: (context, index) {
+              final state = states[index];
+              return RadioListTile(
+                title: Text(state),
+                value: state,
+                groupValue: selectedState,
+                onChanged: (value) {
+                  onSelected(value.toString());
+                  Navigator.pop(context);     // Close dialog
+                },
+              );
+            },
+          ),
+        ),
+      );
+    },
+  );
+}
+
 
   void savePersonalInfo() {
     personalregisterController.personalInfo.update((info) {
@@ -89,6 +144,10 @@ class _PersonalInformationState extends State<PersonalInformation> {
       info?.email = _emailController.text;
       info?.jobType = _jobType!;
       info?.pincode = _pincodeController.text;
+      info?.street = _streetController.text;
+      info?.Street2 = _streetController2.text;
+      info?.city = _cityController.text;
+      info?.state = _stateController.text;
       // info?.aadharFront=aadharF!;
       // info?.aadharBack=aadharB!;
       if (_aadharFront != null) {
@@ -105,6 +164,8 @@ class _PersonalInformationState extends State<PersonalInformation> {
   void initState() {
     super.initState();
 
+ loadStates();
+
     _countryController =
         TextEditingController(text: widget.initialCountryCode ?? "+91");
 
@@ -115,6 +176,10 @@ class _PersonalInformationState extends State<PersonalInformation> {
         personalregisterController.stepEmergMobileNum.value;
     _emailController.text = personalregisterController.steptEmail.value;
     _pincodeController.text = personalregisterController.steptPincode.value;
+    _streetController.text = personalregisterController.stept1Street.value;
+    _streetController2.text = personalregisterController.stept1Street2.value;
+    _cityController.text = personalregisterController.stept1city.value;
+    _stateController.text = personalregisterController.stept1State.value;
     _jobType = personalregisterController.jobType.value;
     _jobType =
         widget.initialJobType ?? personalregisterController.jobType.value;
@@ -133,6 +198,33 @@ class _PersonalInformationState extends State<PersonalInformation> {
     _validateForm(); // Validate form initially based on provided initial values
   }
 
+
+void loadStates() async {
+  stateList = await fetchStates();
+  setState(() {});
+}
+Future<List<String>> fetchStates() async {
+  final response = await http.get(Uri.parse(API.getStateApi));
+
+  if (response.statusCode == 200) {
+    final jsonData = jsonDecode(response.body);
+
+    // extract list from "data"
+    List<dynamic> dataList = jsonData['data'];
+
+    // map only stateName values
+    List<String> states = dataList
+        .map((item) => item['stateName'].toString())
+        .toList();
+
+    return states;
+  } else {
+    throw Exception("Failed to load states");
+  }
+}
+
+
+
   void _validateForm() {
     if (mounted) {
       setState(() {
@@ -141,6 +233,10 @@ class _PersonalInformationState extends State<PersonalInformation> {
             _textFieldController.text.isNotEmpty &&
             _emailController.text.isNotEmpty &&
             _pincodeController.text.isNotEmpty &&
+            _streetController.text.isNotEmpty&&
+            _streetController2.text.isNotEmpty&&
+            _cityController.text.isNotEmpty&&
+            _stateController.text.isNotEmpty&&
             personalregisterController.jobType.value.isNotEmpty &&
             _aadharFront != null &&
             _aadharBack != null;
@@ -413,7 +509,133 @@ class _PersonalInformationState extends State<PersonalInformation> {
                     ),
                   ),
                   CustomSizedBox(height: 20),
+                 
+                  CustomText(
+                    text: 'Address',
+                    style: CustomTextStyle.normalBoldText,
+                  ),
+                    CustomSizedBox(height: 20),
                   CustomTextFormField(
+                    labelText: null,
+                    controller: _streetController,
+                    validator: validateStreet,
+                    onChanged: (text) {
+                      personalregisterController.restStreet1Get(text);
+                    },
+                    label: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Street-1',
+                            style: CustomTextStyle.labelText,
+                          ),
+                          TextSpan(
+                            text: ' ⁕',
+                            style: CustomTextStyle.starText,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                     CustomSizedBox(height: 20),
+                      CustomTextFormField(
+                    labelText: null,
+                    controller: _streetController2,
+                    validator: validateStreet,
+                    onChanged: (text) {
+                      personalregisterController.restStreet2Get(text);
+                    },
+                    label: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Street-2',
+                            style: CustomTextStyle.labelText,
+                          ),
+                          TextSpan(
+                            text: ' ⁕',
+                            style: CustomTextStyle.starText,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                     CustomSizedBox(height: 20),
+
+                      CustomTextFormField(
+                    labelText: null,
+                    controller: _cityController,
+                    validator: validatecity,
+                    onChanged: (text) {
+                      personalregisterController.restcityGet(text);
+                    },
+                    label: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'City',
+                            style: CustomTextStyle.labelText,
+                          ),
+                          TextSpan(
+                            text: ' ⁕',
+                            style: CustomTextStyle.starText,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                     CustomSizedBox(height: 20),
+
+                      InkWell(
+                         onTap: () {
+    showStateDialog(
+      context: context,
+      states: stateList,            // from backend
+      selectedState: selectedState,
+      onSelected: (value) {
+        setState(() {
+          selectedState = value;
+             _stateController.text = value;
+        });
+
+        personalregisterController.restStateGet(value);
+      },
+    );
+  },
+                        child: AbsorbPointer(
+                          child: CustomTextFormField(
+                                              labelText: null,
+                                              controller: _stateController,
+                                                
+                              readonly: true,
+                              showCursor: false,
+                                           validator: validatestate,
+                                              onChanged: (text) {
+                          personalregisterController.restStateGet(text);
+                                              },
+                                              label: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'State',
+                                style: CustomTextStyle.labelText,
+                              ),
+                              TextSpan(
+                                text: ' ⁕',
+                                style: CustomTextStyle.starText,
+                              ),
+                            ],
+                          ),
+                                              ),
+                                            ),
+                        ),
+                      ),
+
+
+
+
+                      CustomSizedBox(height: 20),
+                   CustomTextFormField(
                     labelText: null,
                     controller: _pincodeController,
                     validator: validatePincode,
@@ -435,6 +657,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
                       ),
                     ),
                   ),
+               
                   CustomSizedBox(height: 20),
                   CustomText(
                     text: 'Job Type',
@@ -618,4 +841,64 @@ class _PersonalInformationState extends State<PersonalInformation> {
       ),
     );
   }
+  Widget stateField() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: 'State',
+              style: CustomTextStyle.labelText,
+            ),
+            TextSpan(
+              text: ' ⁕',
+              style: CustomTextStyle.starText,
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(height: 6),
+
+      InkWell(
+        onTap: () {
+          showStateDialog(
+            context: context,
+            states: stateList,
+            selectedState: selectedState,
+            onSelected: (value) {
+              setState(() => selectedState = value);
+              personalregisterController.restStateGet(value);
+            },
+          );
+        },
+        child: Container(
+          height: 58,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.grey.shade400, width: 1),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                selectedState ?? "State",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: selectedState == null
+                      ? Colors.grey.shade500
+                      : Colors.black87,
+                ),
+              ),
+              const Icon(Icons.arrow_drop_down, color: Colors.black87),
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
 }

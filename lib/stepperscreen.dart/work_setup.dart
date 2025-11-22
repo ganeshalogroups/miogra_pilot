@@ -35,6 +35,7 @@ class _WorkSetupState extends State<WorkSetup> {
   String? _selectedLocation;
   bool _deliveryBag = false;
   bool _tShirt = false;
+  bool termsConditions = false;
   bool isLoading = false;
   late RegisterController workRegisterController;
 
@@ -54,6 +55,7 @@ class _WorkSetupState extends State<WorkSetup> {
     _selectedLocation = workRegisterController.regionData.value;
     _deliveryBag = workRegisterController.deliveryBag.value;
     _tShirt = workRegisterController.tShirt.value;
+    termsConditions = workRegisterController.termsCondition.value;
 
     fetchRegionData();
   }
@@ -279,12 +281,32 @@ class _WorkSetupState extends State<WorkSetup> {
                             },
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: CheckboxListTile(
+                            title: CustomText(
+                              text: 'Terms & Conditions',
+                              style: CustomTextStyle.normalBoldText,
+                            ),
+                            value: termsConditions,
+                            activeColor: 
+ Color(0xFF623089),
+                            onChanged: (bool? value) {
+                              setState(() {
+                                termsConditions = value!;
+                                workRegisterController.updateTermsConditions(value);
+                              });
+                            },
+                          ),
+                        ),
                       ],
                     ),
                     Padding(
                       padding: const EdgeInsets.all(20.0),
-                      child: Obx(() {
-                        return isFormValid &&
+                      child:
+                      
+                       Obx(() {
+                        return isFormValid && workRegisterController.termsCondition.value &&
                                 workRegisterController
                                     .isPersonalInfoCompleted.value &&
                                 workRegisterController

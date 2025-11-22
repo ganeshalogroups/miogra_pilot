@@ -38,6 +38,7 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController flatNoController = TextEditingController();
   TextEditingController areaController = TextEditingController();
   TextEditingController landmarkController = TextEditingController();
+  //TextEditingController areaController = TextEditingController();
   Map<String, String> _initialValues = {}; // Store initial field values
   bool _isNewImagePicked = false; // Track new image pick state.
 
@@ -54,8 +55,13 @@ class _EditProfileState extends State<EditProfile> {
       _profileUpdateController.mobNumb.value = mobilenumb.toString();
 
       var profileData = profilScreeenController.deliveryManpProfile.first;
-      _profileUpdateController.flatNo.value =
-          profileData['address']['houseNo'] ?? '';
+      _profileUpdateController.street1.value =
+          profileData['address']['street1'] ?? '';
+          // profileData['address']['houseNo'] ?? '';
+            _profileUpdateController.street2.value =profileData['address']['street2'] ?? '';
+            _profileUpdateController.city.value =profileData['address']['city'] ?? '';
+            _profileUpdateController.state.value =profileData['address']['state'] ?? '';
+            _profileUpdateController.pincode.value =profileData['address']['postalCode'] ?? '';
       _profileUpdateController.delarea.value =
           profileData['address']['city'] ?? '';
       _profileUpdateController.nearBy.value =
@@ -64,7 +70,11 @@ class _EditProfileState extends State<EditProfile> {
         'name': _profileUpdateController.delPartName.value,
         'email': _profileUpdateController.emailId.value,
         'mobile': _profileUpdateController.mobNumb.value,
-        'flatNo': _profileUpdateController.flatNo.value,
+        'street1': _profileUpdateController.street1.value,
+        'street2': _profileUpdateController.street2.value,
+        'city': _profileUpdateController.city.value,
+        'state': _profileUpdateController.state.value,
+        'postalCode': _profileUpdateController.pincode.value,
         'delarea': _profileUpdateController.delarea.value,
         'nearBy': _profileUpdateController.nearBy.value,
       };
@@ -77,7 +87,11 @@ class _EditProfileState extends State<EditProfile> {
             _initialValues['name'] ||
         _profileUpdateController.emailId.value != _initialValues['email'] ||
         _profileUpdateController.mobNumb.value != _initialValues['mobile'] ||
-        _profileUpdateController.flatNo.value != _initialValues['flatNo'] ||
+        _profileUpdateController.street1.value != _initialValues['street1'] ||
+        _profileUpdateController.street2.value != _initialValues['street2'] ||
+        _profileUpdateController.city.value != _initialValues['city'] ||
+        _profileUpdateController.state.value != _initialValues['state'] ||
+        _profileUpdateController.pincode.value != _initialValues['postalCode'] ||
         _profileUpdateController.delarea.value != _initialValues['delarea'] ||
         _profileUpdateController.nearBy.value != _initialValues['nearBy'];
     bool imageModified =
@@ -132,9 +146,13 @@ class _EditProfileState extends State<EditProfile> {
     return _profileUpdateController.delPartName.value.isNotEmpty &&
         _profileUpdateController.emailId.value.isNotEmpty &&
         _profileUpdateController.mobNumb.value.isNotEmpty &&
-        _profileUpdateController.flatNo.value.isNotEmpty &&
-        _profileUpdateController.delarea.value.isNotEmpty &&
-        _profileUpdateController.nearBy.value.isNotEmpty;
+        _profileUpdateController.street1.value.isNotEmpty &&
+        _profileUpdateController.street2.value.isNotEmpty &&
+        _profileUpdateController.city.value.isNotEmpty &&
+        _profileUpdateController.state.value.isNotEmpty &&
+        _profileUpdateController.pincode.value.isNotEmpty ;
+      //  _profileUpdateController.delarea.value.isNotEmpty &&
+       // _profileUpdateController.nearBy.value.isNotEmpty;
   }
 
   void _updateFormState() {
@@ -154,7 +172,7 @@ class _EditProfileState extends State<EditProfile> {
                 MaterialPageRoute(
                     builder: (context) => DeliveryBottomNavigation(
                           showBottomSheet: false,
-                          initialIndex: 3,
+                          initialIndex: 2,
                         ))),
           ),
           title: Center(
@@ -433,21 +451,58 @@ class _EditProfileState extends State<EditProfile> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(height: 10),
+                              // CustomPriceTextFormField(
+                              //   autovalidateMode:
+                              //       AutovalidateMode.onUserInteraction,
+                              //   readOnly: false,
+                              //   validator: (value) {
+                              //     if (value == null || value.isEmpty) {
+                              //       return 'Please enter a House number';
+                              //     }
+                              //     bool hasLetter =
+                              //         value.contains(RegExp(r'[a-zA-Z]'));
+                              //     bool hasDigit = value.contains(RegExp(r'\d'));
+
+                              //     if (!hasLetter || !hasDigit) {
+                              //       return 'Please Enter both House Number and Street';
+                              //     }
+                              //     return null;
+                              //   },
+                              //   label: RichText(
+                              //     text: TextSpan(
+                              //       children: [
+                              //         TextSpan(
+                              //             text:
+                              //                 'Flat / House no / Floor / Building',
+                              //             style: CustomTextStyle
+                              //                 .greyTextFormFieldText),
+                              //         TextSpan(
+                              //             text: ' ⁕',
+                              //             style: TextStyle(
+                              //                 color: Colors.red, fontSize: 17)),
+                              //       ],
+                              //     ),
+                              //   ),
+                              //   initialValue:
+                              //       _profileUpdateController.flatNo.value,
+                              //   onChanged: (text) {
+                              //     _profileUpdateController.flatNo.value = text;
+                              //     _updateFormState();
+                              //   },
+                              //   //  validator: validateRestaurantName
+                              // ),
                               CustomPriceTextFormField(
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 readOnly: false,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Please enter a House number';
+                                    return 'Please enter Street 1';
                                   }
-                                  bool hasLetter =
-                                      value.contains(RegExp(r'[a-zA-Z]'));
-                                  bool hasDigit = value.contains(RegExp(r'\d'));
-
-                                  if (!hasLetter || !hasDigit) {
-                                    return 'Please Enter both House Number and Street';
+                                  if (value.length <=10) {
+                                    return 'Please enter  minimum 10 characters for Street 1';
                                   }
+                                 
                                   return null;
                                 },
                                 label: RichText(
@@ -455,7 +510,7 @@ class _EditProfileState extends State<EditProfile> {
                                     children: [
                                       TextSpan(
                                           text:
-                                              'Flat / House no / Floor / Building',
+                                              'Street 1',
                                           style: CustomTextStyle
                                               .greyTextFormFieldText),
                                       TextSpan(
@@ -466,38 +521,37 @@ class _EditProfileState extends State<EditProfile> {
                                   ),
                                 ),
                                 initialValue:
-                                    _profileUpdateController.flatNo.value,
+                                    _profileUpdateController.street1.value,
                                 onChanged: (text) {
-                                  _profileUpdateController.flatNo.value = text;
+                                  _profileUpdateController.street1.value = text;
                                   _updateFormState();
                                 },
-                                //  validator: validateRestaurantName
+                               
                               ),
-                              SizedBox(
+
+ SizedBox(
                                 height: 12,
                               ),
                               CustomPriceTextFormField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 readOnly: false,
-                                style: TextStyle(color: Colors.black),
-                                initialValue:
-                                    _profileUpdateController.delarea.value,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Please enter an area';
+                                    return 'Please enter Street 2';
                                   }
+                                    if (value.length <=10) {
+                                    return 'Please enter  minimum 10 characters for Street 2';
+                                  }
+                                 
                                   return null;
-                                },
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                onChanged: (text) {
-                                  _profileUpdateController.delarea.value = text;
-                                  _updateFormState();
                                 },
                                 label: RichText(
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
-                                          text: 'Area / Sector / Locality',
+                                          text:
+                                              'Street 2',
                                           style: CustomTextStyle
                                               .greyTextFormFieldText),
                                       TextSpan(
@@ -507,37 +561,158 @@ class _EditProfileState extends State<EditProfile> {
                                     ],
                                   ),
                                 ),
+                                initialValue:
+                                    _profileUpdateController.street2.value,
+                                onChanged: (text) {
+                                  _profileUpdateController.street2.value = text;
+                                  _updateFormState();
+                                },
+                               
+                              ),
+ SizedBox(
+                                height: 12,
+                              ),
+
+                              CustomPriceTextFormField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                readOnly: false,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter City';
+                                  }
+                                 
+                                  return null;
+                                },
+                                label: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                          text:
+                                              'City',
+                                          style: CustomTextStyle
+                                              .greyTextFormFieldText),
+                                      TextSpan(
+                                          text: ' ⁕',
+                                          style: TextStyle(
+                                              color: Colors.red, fontSize: 17)),
+                                    ],
+                                  ),
+                                ),
+                                initialValue:
+                                    _profileUpdateController.city.value,
+                                onChanged: (text) {
+                                  _profileUpdateController.city.value = text;
+                                  _updateFormState();
+                                },
+                               
+                              ),
+
+                               SizedBox(
+                                height: 12,
+                              ),
+                              CustomPriceTextFormField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                readOnly: false,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter State';
+                                  }
+                                 
+                                  return null;
+                                },
+                                label: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                          text:
+                                              'State',
+                                          style: CustomTextStyle
+                                              .greyTextFormFieldText),
+                                      TextSpan(
+                                          text: ' ⁕',
+                                          style: TextStyle(
+                                              color: Colors.red, fontSize: 17)),
+                                    ],
+                                  ),
+                                ),
+                                initialValue:
+                                    _profileUpdateController.state.value,
+                                onChanged: (text) {
+                                  _profileUpdateController.state.value = text;
+                                  _updateFormState();
+                                },
+                               
                               ),
                               SizedBox(
                                 height: 12,
                               ),
-                              CustomPriceTextFormField(
-                                readOnly: false,
-                                style: TextStyle(color: Colors.black),
-                                initialValue:
-                                    _profileUpdateController.nearBy.value,
-                                onChanged: (text) {
-                                  _profileUpdateController.nearBy.value = text;
-                                  _updateFormState();
-                                },
-                                // validator: validatePhone,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                label: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: 'Nearby landmark ',
-                                          style: CustomTextStyle
-                                              .greyTextFormFieldText),
-                                      TextSpan(
-                                          text: ' ⁕',
-                                          style: TextStyle(
-                                              color: Colors.red, fontSize: 17)),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              // CustomPriceTextFormField(
+                              //   controller:areaController ,
+                              //   readOnly: false,
+                              //   style: TextStyle(color: Colors.black),
+                              //   initialValue:
+                              //       _profileUpdateController.delarea.value,
+                              //   validator: (value) {
+                              //     if (value == null || value.isEmpty) {
+                              //       return 'Please enter an area';
+                              //     }
+                              //     return null;
+                              //   },
+                              //   autovalidateMode:
+                              //       AutovalidateMode.onUserInteraction,
+                              //   onChanged: (text) {
+                              //    _profileUpdateController.delarea.value = text;
+                              //  ///  stept1city=text;
+                              //     _updateFormState();
+                              //   },
+                              //   label: RichText(
+                              //     text: TextSpan(
+                              //       children: [
+                              //         TextSpan(
+                              //             text: 'Area / Sector / Locality',
+                              //             style: CustomTextStyle
+                              //                 .greyTextFormFieldText),
+                              //         TextSpan(
+                              //             text: ' ⁕',
+                              //             style: TextStyle(
+                              //                 color: Colors.red, fontSize: 17)),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
+                              // SizedBox(
+                              //   height: 12,
+                              // ),
+                              // CustomPriceTextFormField(
+                              //   controller: landmarkController,
+                              //   readOnly: false,
+                              //   style: TextStyle(color: Colors.black),
+                              //   initialValue:
+                              //       _profileUpdateController.nearBy.value,
+                              //   onChanged: (text) {
+                              //     _profileUpdateController.nearBy.value = text;
+                              //     _updateFormState();
+                              //   },
+                              //   // validator: validatePhone,
+                              //   autovalidateMode:
+                              //       AutovalidateMode.onUserInteraction,
+                              //   label: RichText(
+                              //     text: TextSpan(
+                              //       children: [
+                              //         TextSpan(
+                              //             text: 'Nearby landmark ',
+                              //             style: CustomTextStyle
+                              //                 .greyTextFormFieldText),
+                              //         TextSpan(
+                              //             text: ' ⁕',
+                              //             style: TextStyle(
+                              //                 color: Colors.red, fontSize: 17)),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                       ],
@@ -576,10 +751,13 @@ class _EditProfileState extends State<EditProfile> {
                                     .deliveryManpProfile[0]["companyName"],
                                 "fullAddress": profilScreeenController
                                     .deliveryManpProfile[0]["fullAddress"],
-                                "street": profilScreeenController
-                                    .deliveryManpProfile[0]["street"],
-                                "state": profilScreeenController
-                                    .deliveryManpProfile[0]["state"],
+                                "street1": _profileUpdateController.street1.value,
+                                "street2": _profileUpdateController.street2.value,
+                                // "street": profilScreeenController
+                                //     .deliveryManpProfile[0]["street"],
+                                "state":_profileUpdateController.state.value,
+                                // "state": profilScreeenController
+                                //     .deliveryManpProfile[0]["state"],
                                 "country": deliverymanCountry,
                                 "postalCode": deliveryManPostalcode,
                                 "contactPerson": profilScreeenController
@@ -594,9 +772,9 @@ class _EditProfileState extends State<EditProfile> {
                                 "longitude": profilScreeenController
                                     .deliveryManpProfile[0]["longitude"],
                                 "region": deliverymanregion,
-                                "city": _profileUpdateController.delarea.value,
-                                "houseNo":
-                                    _profileUpdateController.flatNo.value,
+                                "city": _profileUpdateController.city.value,
+                                "houseNo":"",
+                                //    _profileUpdateController.flatNo.value,
                                 "landMark":
                                     _profileUpdateController.nearBy.value,
                               };
@@ -607,12 +785,21 @@ class _EditProfileState extends State<EditProfile> {
                                       ? profileImageUploader.imageURL.value
                                       : deliveryManImage,
                                   addressList);
+
+                                   print("BUTTON WORKING");
+
                             }
-                          } else {}
+
+                           
+                          } else {
+  print("BUTTON NOT WORKING");
+                          }
+
                           setState(() {
                             isLoading =
                                 false; // Revert to original button state
                           });
+                            
                         },
                         child: isLoading
                             ? SizedBox(

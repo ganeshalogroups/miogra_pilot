@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:miogra_service/Validators.dart/exit.dart';
 import 'package:miogra_service/widgets.dart/custom_space.dart';
 import 'package:miogra_service/widgets.dart/custom_text.dart';
 import 'package:miogra_service/widgets.dart/custom_textstyle.dart';
@@ -43,76 +44,87 @@ class _StepperScreenState extends State<StepperScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(1.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomSizedBox(height: 20),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: steps.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: InkWell(
-                        onTap: () => _navigateToStep(index),
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height / 10,
-                            width: MediaQuery.of(context).size.width / 1.1,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey.shade100,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Center(
-                                child: Row(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        CustomText(
-                                          text: steps[index],
-                                          style: CustomTextStyle.bigBlackText,
-                                        ),
-                                        CustomText(
-                                          text: stepsDesc[index],
-                                          style: CustomTextStyle.stepTitlText,
-                                        ),
-                                      ],
-                                    ),
-                                    Spacer(),
-                                    widget.completedSteps[index]
-                                        ? SizedBox(
-                                            height: 20,
-                                            width: 20,
-                                            child: Image.asset(
-                                                'assets/images/stepsuccess.png'),
-                                          )
-                                        : Icon(
-                                            MdiIcons.chevronRight,
-                                            color: Colors.grey,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
+       
+        if (didPop) return;
+        
+            await ExitApp.handlePop();
+         return;
+        
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(1.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomSizedBox(height: 20),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: steps.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: InkWell(
+                          onTap: () => _navigateToStep(index),
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height / 10,
+                              width: MediaQuery.of(context).size.width / 1.1,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.grey.shade100,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Center(
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          CustomText(
+                                            text: steps[index],
+                                            style: CustomTextStyle.bigBlackText,
                                           ),
-                                  ],
+                                          CustomText(
+                                            text: stepsDesc[index],
+                                            style: CustomTextStyle.stepTitlText,
+                                          ),
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      widget.completedSteps[index]
+                                          ? SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: Image.asset(
+                                                  'assets/images/stepsuccess.png'),
+                                            )
+                                          : Icon(
+                                              MdiIcons.chevronRight,
+                                              color: Colors.grey,
+                                            ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
-              CustomSizedBox(height: 50),
-            ],
+                CustomSizedBox(height: 50),
+              ],
+            ),
           ),
         ),
       ),

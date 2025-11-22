@@ -58,6 +58,7 @@ class _UserActiveStatusDesignState extends State<UserActiveStatusDesign> {
         setState(() {
           switchValue = !switchValue;
           storage.write('switchStatus', switchValue);
+          
 
           DateTime now = DateTime.now();
           String formattedStartDateTime = DateFormat('MM-dd-yyyy').format(now);
@@ -65,6 +66,7 @@ class _UserActiveStatusDesignState extends State<UserActiveStatusDesign> {
 
           if (!switchValue) {
             _activeStatusUpdatecontroller.updatActiveStatus("offline");
+            // storage.write('isdelactive',switchValue);  
             _depositUpdatecontroller.updateDeposit(
                 formattedStartDateTime, formattedEndDateTime, vendorId ?? '');
             if (vendorId == null) {
@@ -118,7 +120,7 @@ class _UserActiveStatusDesignState extends State<UserActiveStatusDesign> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  text: 'Hello, Welcome ',
+                  text: 'Hello, Welcome',
                   style: CustomTextStyle.helloText,
                 ),
                 Text(
@@ -138,22 +140,25 @@ class _UserActiveStatusDesignState extends State<UserActiveStatusDesign> {
               onTap: () {
                 if (depositeData.isEmpty) {
                   _isLoading ? null : _toggleSwitch();
-                } else {
+                } 
+                else {
                   if (depositeData[0]["depositStatus"] == "request" ||
                       depositeData[0]["depositStatus"] == "pending") {
-                    if (switchValue == false) {
-                      Get.snackbar('', '',
-                          titleText: Text(
-                            "Update User Failed",
-                            style: CustomTextStyle.tripText,
-                          ),
-                          messageText: Text(
-                            "You must deposit the pending amount.",
-                            style: CustomTextStyle.tripText,
-                          ));
-                    } else {
+                    // if (switchValue == false) {
+                    //   Get.snackbar('', '',
+                    //       titleText: Text(
+                    //         "Update User Failed",
+                    //         style: CustomTextStyle.tripText,
+                    //       ),
+                    //       messageText: Text(
+                    //         "You must deposit the pending amount.",
+                    //         style: CustomTextStyle.tripText,
+                    //       ));
+                    // } 
+                    
+                  //  else {
                       _isLoading ? null : _toggleSwitch();
-                    }
+                   // }
                   } else {
                     _isLoading ? null : _toggleSwitch();
                   }

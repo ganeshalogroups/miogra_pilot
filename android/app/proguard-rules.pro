@@ -1,0 +1,3 @@
+-keep class com.google.android.exoplayer2.** { *; }
+-keep class com.google.android.exoplayer2.audio.** { *; }
+-keep class com.google.android.exoplayer2.decoder.** { *; }

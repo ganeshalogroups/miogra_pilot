@@ -10,7 +10,8 @@ import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ChartScreen extends StatefulWidget {
-  const ChartScreen({super.key});
+ final dynamic tripAmount;
+  const ChartScreen({super.key, this.tripAmount});
 
   @override
   State<ChartScreen> createState() => _ChartScreenState();
@@ -64,7 +65,7 @@ class _ChartScreenState extends State<ChartScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: 'Earning for this Week',
+                  text: 'Earning for this Day',
                   style: CustomTextStyle.earningBlackText,
                 ),
                 Row(
@@ -105,36 +106,37 @@ class _ChartScreenState extends State<ChartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
-                      text: 'Earning for this Week',
+                      text: 'Earning for this Day',
                       style: CustomTextStyle.earningWeek,
                     ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                            onTap: _showChartDialog,
-                            child: SizedBox(
-                                height: 25,
-                                width: 25,
-                                child: _showChart
-                                    ? ColorFiltered(
-                                        colorFilter: ColorFilter.mode(
-                                          Color.fromARGB(255, 18, 145, 33),
-                                          BlendMode.srcIn,
-                                        ),
-                                        child: Image.asset(
-                                            'assets/images/charticon.png'),
-                                      )
-                                    : Image.asset(
-                                        'assets/images/charticon.png'))),
-                        SizedBox(
-                          width: 10,
-                        ),
+                    // Row(
+                    //   children: [
+                        // GestureDetector(
+                        //     onTap: _showChartDialog,
+                        //     child: SizedBox(
+                        //         height: 25,
+                        //         width: 25,
+                        //         child: _showChart
+                        //             ? ColorFiltered(
+                        //                 colorFilter: ColorFilter.mode(
+                        //                   Color.fromARGB(255, 18, 145, 33),
+                        //                   BlendMode.srcIn,
+                        //                 ),
+                        //                 child: Image.asset(
+                        //                     'assets/images/charticon.png'),
+                        //               )
+                        //             : Image.asset(
+                        //                 'assets/images/charticon.png'))),
+                        // SizedBox(
+                        //   width: 10,
+                        // ),
                         CustomText(
-                          text:
-                              '₹${chartController.totalWeekIncome.value.toStringAsFixed(2)}',
+                          text: '₹${widget.tripAmount. toStringAsFixed(2)}',
+                              //'₹${chartController.totalWeekIncome.value.toStringAsFixed(2)}',
+                          
                           style: CustomTextStyle.smallBlackText,
-                        ),
-                      ],
+                      //   ),
+                      // ],
                     )
                   ],
                 ),

@@ -12,3 +12,4 @@ String fcmToken = "";
 String? parenAdminId;
 String? globalImageUrlLink;
 String currentDateGlobal = "";
+String isdelactive ="";

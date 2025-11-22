@@ -47,15 +47,18 @@ class ImageUploader {
      
       if (response.statusCode == 200) {
        imageAFURL (response.data["data"]["imgUrl"]);
+       print("Image uploaded successfully");
 
       } else {
         Get.snackbar(
           "File Upload Failed",
           "Aadhar Front......: ${result["data"]["imgUrl"]}",
         );
+         print("Image uploaded failed");
       }
     } catch (error) {
        // print('$error');
+        print("Image uploaded failed catch error $error");
 
     } finally {
       isFileUploading(false);

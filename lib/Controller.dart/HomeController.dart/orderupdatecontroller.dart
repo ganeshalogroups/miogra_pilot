@@ -178,9 +178,12 @@ class OrderUpdateController extends GetxController {
             ));
       } else {
         pickedOrderUpdateData = null;
+        print("else error");
+        print("else error  ${response.statusCode}");
       }
     } catch (e) {
       // print('$e');
+       print("catch error   $e");
     } finally {
       isPickedOrderUpdateLoading.value = false;
     }

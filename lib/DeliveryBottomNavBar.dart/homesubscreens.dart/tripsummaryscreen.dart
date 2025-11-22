@@ -328,10 +328,12 @@ class _TripSummaryState extends State<TripSummary> {
                           width: double.infinity,
                           borderRadius: BorderRadius.circular(20),
                           onPressed: () {
+                               print("Botton aa Pressing    ${  tripData['_id']}");
                             orderUpdateController.updatePickedRestaurentStatus(
                                 tripData['_id'] ?? '',
                                 DateTime.now(),
                                 tripData['orderId']);
+                     
                           },
                           child: CustomText(
                             text: ConstContentService()
@@ -344,7 +346,9 @@ class _TripSummaryState extends State<TripSummary> {
                       : CustomdisabledButton(
                           width: double.infinity,
                           borderRadius: BorderRadius.circular(20),
-                          onPressed: () {},
+                          onPressed: () {
+                            print("Bitton Pressing");
+                          },
                           child: CustomText(
                             text: ConstContentService()
                                 .deliveryBottonTypeMethod(delType),

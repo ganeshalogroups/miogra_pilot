@@ -1,11 +1,11 @@
 import 'package:miogra_service/Const.dart/const_variables.dart';
 
 class API {
-  //Live
-//  static String microService = "https://api.thefastx.com/"; 
-//Dev
-  // static String microService = "https://dev.thefastx.com/";
-   static String microService = "https://miogra.com/";
+ 
+   //static String microService = "https://miogra.com/";
+
+   // Dev
+   static String microService = "https://dev.miogra.com/";
 
   //request-Login api
   static String requestOtp = '${microService}api/user/requestOtp';
@@ -24,6 +24,7 @@ class API {
 
   //region
   static String getRegionApi = '${microService}api/user/region?status=true';
+  static String getStateApi = '${microService}api/user/state';
 
   //token
   static String token = '${microService}api/user/authlist/token';
@@ -62,6 +63,8 @@ class API {
 
   //earningsfilterbycalendor
   static String earningsApi = '${microService}api/order/trip/earningList?';
+  
+  static String earnings = '${microService}api/order/newEarnings?';
 
   //Notifications
   static String notificationsApi =

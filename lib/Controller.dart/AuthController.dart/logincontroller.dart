@@ -12,58 +12,58 @@ import 'package:http/http.dart' as http;
 class LoginController extends GetxController {
  String usertoken = getStorage.read("Usertoken") ?? '';
 
-  var islogindataLoading = false.obs;
+ // var islogindataLoading = false.obs;
  // dynamic logindata;
 
-  void loginApi({dynamic mobileNo,required BuildContext context}) async {
-    try {
-      islogindataLoading(true);
-      var response = await http.post(
-        Uri.parse(API.login),
-        headers: {
-        //  "Accept": "*/*",
-          "Content-Type": "application/json",
-         // 'Authorization': 'Bearer $usertoken',
-        },
-        body: jsonEncode(<String, dynamic>{
-          "mobileNo": mobileNo,
-        }),
-      );
-      var result = jsonDecode(response.body);
-      if (response.statusCode == 200 ||
-          response.statusCode == 201 ||
-          response.statusCode == 202) {
+//   void loginApi({dynamic mobileNo,required BuildContext context}) async {
+//     try {
+//       islogindataLoading(true);
+//       var response = await http.post(
+//         Uri.parse(API.login),
+//         headers: {
+//         //  "Accept": "*/*",
+//           "Content-Type": "application/json",
+//          // 'Authorization': 'Bearer $usertoken',
+//         },
+//         body: jsonEncode(<String, dynamic>{
+//           "mobileNo": mobileNo,
+//         }),
+//       );
+//       var result = jsonDecode(response.body);
+//       if (response.statusCode == 200 ||
+//           response.statusCode == 201 ||
+//           response.statusCode == 202) {
         
-      //  logindata = result;
-        print("LOGIN $result");
- requestOtpApi(
-                                        mobileNo: mobileNo,
-                                       );
-         Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => OtpScreen(
-                                            phoneNumber: mobileNo),
-                                      ),
-                                    );
-      } else {
-       // logindata = null;
-        ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Login failed: ${result["message"]}"),
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      }
-    } catch (e) {
-       // print('$error');
+//       //  logindata = result;
+//         print("LOGIN $result");
+//  requestOtpApi(
+//                                         mobileNo: mobileNo,
+//                                        );
+//          Navigator.push(
+//                                       context,
+//                                       MaterialPageRoute(
+//                                         builder: (_) => OtpScreen(
+//                                             phoneNumber: mobileNo),
+//                                       ),
+//                                     );
+//       } else {
+//        // logindata = null;
+//         ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(
+//           content: Text("Login failed: ${result["message"]}"),
+//           backgroundColor: Colors.red,
+//           behavior: SnackBarBehavior.floating,
+//         ),
+//       );
+//       }
+//     } catch (e) {
+//        // print('$error');
 
-    } finally {
-      islogindataLoading(false);
-    }
-  }
- // var islogindataLoading = false.obs;
+//     } finally {
+//       islogindataLoading(false);
+//     }
+//   }
+  var islogindataLoading = false.obs;
   dynamic logindata;
 
   void requestOtpApi({dynamic mobileNo}) async {

@@ -169,7 +169,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                               _controller.restart();
                                               _isCountdownFinished =
                                                   false; // Reset flag when OTP is resent
-                                              otpController.loginApi(context: context,
+                                              otpController.requestOtpApi(
                                                   mobileNo: widget.phoneNumber);
                                             });
                                           },

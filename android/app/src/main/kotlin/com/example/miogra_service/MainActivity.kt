@@ -1,4 +1,4 @@
-package com.gobbogtechnologies.deliveryapp
+package com.miogra.pilot
 
 import io.flutter.embedding.android.FlutterActivity
 

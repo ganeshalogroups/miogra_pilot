@@ -51,7 +51,7 @@ class _DeliveryBottomNavigationState extends State<DeliveryBottomNavigation> {
 
       EarningsScreen(),
 
-      NotificationScreen(),
+     // NotificationScreen(),
       ProfileScreen(),
     ];
     _lastSeenUpdatecontroller.updateLastSeen();
@@ -193,15 +193,15 @@ class _DeliveryBottomNavigationState extends State<DeliveryBottomNavigation> {
             imagePath: 'assets/images/earnings.png',
             index: 1,
           ),
-          _buildBottomNavigationItem(
-            label: 'Notification',
-            imagePath: 'assets/images/notifications.png',
-            index: 2,
-          ),
+          // _buildBottomNavigationItem(
+          //   label: 'Notification',
+          //   imagePath: 'assets/images/notifications.png',
+          //   index: 2,
+          // ),
           _buildBottomNavigationItem(
             label: 'Profile',
             imagePath: 'assets/images/profile.png',
-            index: 3,
+            index: 2,
           ),
         ],
       ),

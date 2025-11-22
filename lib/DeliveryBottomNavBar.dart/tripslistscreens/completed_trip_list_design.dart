@@ -2,6 +2,7 @@ import 'package:miogra_service/Const.dart/const_variables.dart';
 import 'package:miogra_service/Const.dart/time_convert_values.dart';
 import 'package:miogra_service/Controller.dart/HomeController.dart/completed_trip_controller.dart';
 import 'package:miogra_service/DeliveryBottomNavBar.dart/Earnings/tripdetailsscreen.dart';
+import 'package:miogra_service/DeliveryBottomNavBar.dart/tripslistscreens/completed_tripscreen.dart';
 import 'package:miogra_service/DeliveryBottomNavBar.dart/tripslistscreens/earning_list_card_design.dart';
 import 'package:miogra_service/DeliveryBottomNavBar.dart/tripslistscreens/empty_order_design.dart';
 import 'package:miogra_service/Shimmer/newordersshimmer.dart';
@@ -69,10 +70,14 @@ class _CompletedTripListScreenState extends State<CompletedTripListScreen> {
                         return InkWell(
                           onTap: () {
                             Get.to(
-                                TripDetailsScreen(
+                               CompletedTripscreen(
                                     earnings:
                                         completedTripController.newTrips[i]),
                                 transition: Transition.fadeIn);
+                                // TripDetailsScreen(
+                                //     earnings:
+                                //         completedTripController.newTrips[i]),
+                                // transition: Transition.fadeIn);
                           },
                           child: EarningListCarddesign(
                             dataList: completedTripController.newTrips,

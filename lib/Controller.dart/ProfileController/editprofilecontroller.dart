@@ -20,7 +20,11 @@ class EditProfileController extends GetxController {
   final delPartName = ''.obs;
   final emailId = ''.obs;
   final mobNumb = ''.obs;
-  final flatNo = ''.obs;
+  final street1 = ''.obs;
+  final street2 = ''.obs;
+  final city = ''.obs;
+  final state = ''.obs;
+  final pincode = ''.obs;
   final delarea = ''.obs;
   final nearBy = ''.obs;
   final pickedImage = Rx<File?>(null);
@@ -72,15 +76,20 @@ class EditProfileController extends GetxController {
           }));
 
       if (response.statusCode >= 200 && response.statusCode <= 202) {
+        print("API WORKING");
         var result = jsonDecode(response.body);
         profilScreeenController.getProfile();
         Get.offAll(
           () => DeliveryBottomNavigation(
             showBottomSheet: false,
-            initialIndex: 3,
+            initialIndex: 2,
           ),
         );
-      } else {}
+      } else {
+print("API NOT WORKING");
+
+
+      }
     } catch (e) {
       debugPrint('The Error in Update Profile is $e');
     }
@@ -90,7 +99,11 @@ class EditProfileController extends GetxController {
     delPartName.value = '';
     emailId.value = '';
     mobNumb.value = '';
-    flatNo.value = '';
+    street1.value = '';
+    street2.value = '';
+    city.value = '';
+    state.value = '';
+    pincode.value = '';
     delarea.value = '';
     nearBy.value = '';
     pickedImage.value = null;

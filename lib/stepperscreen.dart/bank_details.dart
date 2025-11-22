@@ -38,14 +38,18 @@ class BankDetailScreen extends StatefulWidget {
 }
 
 class _BankDetailScreenState extends State<BankDetailScreen> {
+    final TextEditingController _beneficiaryNameController = TextEditingController();
   final TextEditingController _bankNameController = TextEditingController();
+  final TextEditingController _branchNameController = TextEditingController();
   final TextEditingController _accountTypeController = TextEditingController();
   final TextEditingController _accountNumberController =
       TextEditingController();
   final TextEditingController _reEnterAccountNumberController =
       TextEditingController();
   final TextEditingController _ifscCodeController = TextEditingController();
+  final TextEditingController _panController = TextEditingController();
   String? _validationMessage;
+  String? _panvalidationMessage;
 
   final List<String> _accountTypes = ['Current', 'Savings'];
   String? _selectedAccountType;
@@ -58,7 +62,10 @@ class _BankDetailScreenState extends State<BankDetailScreen> {
       details?.accountType = _accountTypeController.text;
       details?.accountNumber = _accountNumberController.text;
       details?.ifscCode = _ifscCodeController.text;
+      details?.pan = _panController.text;
       details?.bankName = _bankNameController.text;
+      details?.branchName = _branchNameController.text;
+      details?.beneficiaryName = _beneficiaryNameController.text;
     });
     bankRegisterController.updateBankDetailsStatus(_isAllFieldsFilled);
   }
@@ -66,34 +73,45 @@ class _BankDetailScreenState extends State<BankDetailScreen> {
   @override
   void initState() {
     super.initState();
+      _beneficiaryNameController.text = bankRegisterController.beneficiaryName.value;
     _bankNameController.text = bankRegisterController.bankName.value;
+    _branchNameController.text = bankRegisterController.branchName.value;
     _accountTypeController.text = bankRegisterController.acctype.value;
     _accountNumberController.text = bankRegisterController.accNumb.value;
     _reEnterAccountNumberController.text =
         bankRegisterController.reAccNumb.value;
     _ifscCodeController.text = bankRegisterController.ifscCode.value;
+    _panController.text = bankRegisterController.pan.value;
 
     _checkIfAllFieldsFilled();
   }
 
   @override
   void dispose() {
+     _beneficiaryNameController.dispose();
     _bankNameController.dispose();
+    _branchNameController.dispose();
     _accountTypeController.dispose();
     _accountNumberController.dispose();
     _reEnterAccountNumberController.dispose();
     _ifscCodeController.dispose();
+    _panController.dispose();
     super.dispose();
   }
 
   void _checkIfAllFieldsFilled() {
     setState(() {
-      String? ifsc = validateIFSC(_ifscCodeController.text);
-      _isAllFieldsFilled = _bankNameController.text.isNotEmpty &&
+      // String? ifsc = validateIFSC(_ifscCodeController.text);
+      // String? pancard = validatePAN(_panController.text);
+
+      _isAllFieldsFilled = _bankNameController.text.isNotEmpty &&  _beneficiaryNameController.text.isNotEmpty &&
+      _branchNameController.text.isNotEmpty &&
           _accountTypeController.text.isNotEmpty &&
           _accountNumberController.text.isNotEmpty &&
           _reEnterAccountNumberController.text.isNotEmpty &&
-          ifsc == null;
+          //  pancard ==null &&
+          // ifsc == null;
+          _panvalidationMessage==null && _validationMessage == null;
     });
     bankRegisterController.updateBankDetailsStatus(_isAllFieldsFilled);
   }
@@ -212,6 +230,29 @@ class _BankDetailScreenState extends State<BankDetailScreen> {
                         style: CustomTextStyle.mediumBoldText,
                       ),
                     ),
+                     CustomTextFormField(
+                      controller: _beneficiaryNameController,
+                      onChanged: (text) {
+                        bankRegisterController.beneficiaryNameGet(text);
+                        _checkIfAllFieldsFilled();
+                      },
+                      labelText: null,
+                      label: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Beneficiary Name',
+                              style: CustomTextStyle.labelText,
+                            ),
+                            TextSpan(
+                              text: ' ⁕',
+                              style: CustomTextStyle.starText,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    CustomSizedBox(height: 30),
                     CustomTextFormField(
                       controller: _bankNameController,
                       onChanged: (text) {
@@ -224,6 +265,29 @@ class _BankDetailScreenState extends State<BankDetailScreen> {
                           children: [
                             TextSpan(
                               text: 'Bank Name',
+                              style: CustomTextStyle.labelText,
+                            ),
+                            TextSpan(
+                              text: ' ⁕',
+                              style: CustomTextStyle.starText,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    CustomSizedBox(height: 30),
+                     CustomTextFormField(
+                      controller: _branchNameController,
+                      onChanged: (text) {
+                        bankRegisterController.branchNameGet(text);
+                        _checkIfAllFieldsFilled();
+                      },
+                      labelText: null,
+                      label: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Branch Name',
                               style: CustomTextStyle.labelText,
                             ),
                             TextSpan(
@@ -349,11 +413,61 @@ class _BankDetailScreenState extends State<BankDetailScreen> {
                         ),
                       ),
                     ),
-                    if (_validationMessage != null)
+                      if (_validationMessage != null)
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(
                           _validationMessage!,
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 158, 15, 5),
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                    CustomSizedBox(height: 20),
+                    CustomTextFormField(
+                      controller: _panController,
+                      inputFormatters: [
+                        // Forces all input to uppercase
+                        TextInputFormatter.withFunction(
+                          (oldValue, newValue) => TextEditingValue(
+                            text: newValue.text.toUpperCase(),
+                            selection: newValue.selection,
+                          ),
+                        ),
+                      ],
+                      validator: (value) {
+                        return validatePAN(value);
+                      },
+                      onChanged: (text) {
+                        _panvalidationMessage =
+                            validatePAN(_panController.text);
+                        bankRegisterController.pan(text);
+                        _checkIfAllFieldsFilled();
+                      },
+                      labelText: null,
+                      label: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'PAN Number',
+                              style: CustomTextStyle.labelText,
+                            ),
+                            TextSpan(
+                              text: ' ⁕',
+                              style: CustomTextStyle.starText,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                  
+                    if (_panvalidationMessage != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          _panvalidationMessage!,
                           style: TextStyle(
                             color: Color.fromARGB(255, 158, 15, 5),
                             fontSize: 10,
@@ -411,4 +525,20 @@ class _BankDetailScreenState extends State<BankDetailScreen> {
     }
     return null;
   }
+  
+  String? validatePAN(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Please enter PAN number';
+  }
+
+  // 4th letter must be 'P'
+  final RegExp panRegExp = RegExp(r'^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$');
+
+  if (!panRegExp.hasMatch(value.toUpperCase())) {
+    return 'Please enter a valid PAN number (4th letter must be P, e.g. ABCPD1234E)';
+  }
+
+  return null; // ✅ valid
+}
+
 }

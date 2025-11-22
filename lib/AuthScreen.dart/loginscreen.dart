@@ -251,23 +251,23 @@ class _LoginScreenState extends State<LoginScreen> {
                                       });
                                     });
 
-                                    loginController.loginApi(
+                                    loginController.requestOtpApi(
                                         mobileNo: phoneController.text,
-                                        context: context);
+                                    );
                                          setState(() {
                                          isLoading = false;
                                        });
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (_) => OtpScreen(
-                                    //         phoneNumber: phoneController.text),
-                                    //   ),
-                                    // ).then((_) {
-                                    //   setState(() {
-                                    //     isLoading = false;
-                                    //   });
-                                    // });
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => OtpScreen(
+                                            phoneNumber: phoneController.text),
+                                      ),
+                                    ).then((_) {
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                    });
                                   } else {}
                                 },
                                 child: isLoading

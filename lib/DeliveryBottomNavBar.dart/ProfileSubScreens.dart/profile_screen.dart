@@ -115,7 +115,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     editprofilScreeenController.delPartName.value = '';
     editprofilScreeenController.emailId.value = '';
     editprofilScreeenController.mobNumb.value = '';
-    editprofilScreeenController.flatNo.value = '';
+    editprofilScreeenController.street1.value = '';
+    editprofilScreeenController.street2.value = '';
+    editprofilScreeenController.city.value = '';
+    editprofilScreeenController.state.value = '';
+    editprofilScreeenController.pincode.value = '';
     editprofilScreeenController.delarea.value = '';
     editprofilScreeenController.nearBy.value = '';
     getStorage.erase();
@@ -460,7 +464,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 if (index == 1) {
                                 for (var item in redirect
                                     .redirectLoadingDetails["data"]) {
-                                  if (item["key"] == "privacyLink") {
+                                  if (item["key"] == "Delivery Partner PrivacyLink") {
                                     launchwebUrl(context, item["value"]);
 
                                     break; // Exit loop once the "whatsappLink" is found and launched

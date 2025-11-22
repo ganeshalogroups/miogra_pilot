@@ -10,6 +10,8 @@ class CustomTextFormField extends StatelessWidget {
   final double fontSize;
   final String? initialValue;
   final bool autoFocus;
+  final bool readonly;
+  final bool showCursor;
   final bool mask;
   final TextInputType keyboardType;
   final TextCapitalization? textCapitalization;
@@ -57,6 +59,8 @@ class CustomTextFormField extends StatelessWidget {
     this.isNormal = false,
     this.enabled,
     this.label,
+    this.readonly = false,
+    this.showCursor = true,
     this.suffixIconColor,
   });
 
@@ -67,6 +71,9 @@ class CustomTextFormField extends StatelessWidget {
         expands: false,
         autofocus: autoFocus,
         obscureText: mask,
+        
+        readOnly: false,
+        showCursor: true,
         validator: validator,
         maxLength: maxLength,
         controller: controller,

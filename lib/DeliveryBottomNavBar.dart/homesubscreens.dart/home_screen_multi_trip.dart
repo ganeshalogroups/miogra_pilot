@@ -72,7 +72,7 @@ late TabController _tabController;
     profilScreeenController.getProfile();
     _tabController = TabController(length: 3, vsync: this);
     _isMounted = true;
-    switchValue = switchValue;
+   switchValue = switchValue;
     getLocationUpdates();
     _setCustomMarker();
     _enableBackgroundMode();

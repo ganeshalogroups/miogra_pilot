@@ -21,6 +21,9 @@ class RedirectController extends GetxController {
         'Content-Type': 'application/json',
         'userId': userId,
       });
+
+      print("URL ${API.redirecturl}");
+      
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         redirectLoadingDetails = result;

@@ -102,6 +102,8 @@ class NewTripsController extends GetxController {
   var newTripsbyid = <dynamic>[].obs;
   Future<void> getTripsbyId(String id) async {
     print("___________SS____________");
+    print(" USER ID $userId           ID  $id");
+    print(" USER TOKEN $usertoken        ");
     try {
       isdataLoading.value = true;
       final response =
@@ -117,15 +119,20 @@ class NewTripsController extends GetxController {
         var result = jsonDecode(response.body);
         if (result['data'] is List) {
           newTripsbyid.value = result['data'];
-        } else {
+          print("DATA IS LIST");
+       } 
+        else {
           newTripsbyid.value = [result['data']];
+            print("DATA IS NOT LIST");
+            print( [result['data']]);
+
         }
       } else {
         newTripsbyid == [];
         throw Exception('Failed to load New Trips by id');
       }
     } catch (e) {
-      // print('$e');
+       print('ERROR Catch $e');
     } finally {
       print("new trip ${newTripsbyid[0]["tripStatus"]}");
       isdataLoading.value = false;

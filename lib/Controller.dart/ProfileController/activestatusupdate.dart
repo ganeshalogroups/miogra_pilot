@@ -23,8 +23,14 @@ class ActiveStatusController extends GetxController {
           body: jsonEncode(<String, dynamic>{"activeStatus": status}));
 
       if (response.statusCode >= 200 && response.statusCode <= 202) {
+        
         var result = jsonDecode(response.body);
+        bool active = result['data']["activeStatus"] == "online";
+       await GetStorage().write('isdelactive', active);  
+print('${API.activeStatusApi}/$userId');
+     //   print("THE ACTIVE STATUS $active");
         print(result);
+
       } else {}
     } catch (e) {
       debugPrint('The Error in Active Status is $e');

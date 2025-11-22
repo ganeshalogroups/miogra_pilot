@@ -35,6 +35,7 @@ Future<void> getCompletedData({startdate, endDate}) async {
       if (response.statusCode == 200) {
       
       print("completed:${API.earningsApi}acceptedById=$UserId&fromDate=$startdate&toDate=$endDate&tripStatus=delivered");
+      print("OKKKKKKKK");
         var result = jsonDecode(response.body);
         newTrips.value = result['data']['data'] ?? [];
         print("new trip _________________________");

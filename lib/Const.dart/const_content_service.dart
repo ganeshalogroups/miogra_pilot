@@ -19,7 +19,7 @@ class ConstContentService {
     } else if (type == "services") {
       return "Picked Parcel";
     } else if (type == "meat") {
-      return "Picked Order";
+      return "Picked Orde";
     } else {
       return type.toString();
     }

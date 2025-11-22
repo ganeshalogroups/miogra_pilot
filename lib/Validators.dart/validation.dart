@@ -24,6 +24,28 @@ String? validatePincode(String? value) {
   return null;
 }
 
+String? validatecity(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Please enter your City';
+  } 
+  return null;
+}
+
+String? validatestate(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Please enter your State';
+  } 
+  return null;
+}
+String? validateStreet(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Please enter a Street name';
+  } else if (value.length < 10) {
+    return 'Street must be 10 characters';
+  } 
+  return null;
+}
+
 String? validateName(String? value) {
   if (value!.isEmpty) {
     return 'Name is required';

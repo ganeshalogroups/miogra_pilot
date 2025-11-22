@@ -1,3 +1,4 @@
+import 'package:miogra_service/Validators.dart/exit.dart';
 import 'package:miogra_service/stepperscreen.dart/vehicle%20_information.dart';
 import 'package:flutter/material.dart';
 import 'package:miogra_service/stepperscreen.dart/steps.dart';
@@ -63,8 +64,11 @@ class _StepTabBarState extends State<StepTabBar>
         setState(() {
           _isStepperScreen = true;
         });
-        return;
+       
+         return;
+        
       },
+      
       child: Scaffold(
         body: SafeArea(
           child: Column(
@@ -95,7 +99,7 @@ class _StepTabBarState extends State<StepTabBar>
                                     ? Colors.green
                                     : Colors.grey)
                                 : (_currentTabIndex == index
-                                    ? Colors.yellow
+                                    ? Color(0xFF623089)
                                     : (_completedSteps[index]
                                         ? Colors.green
                                         : Colors.grey)),

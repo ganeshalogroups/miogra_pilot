@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:get_storage/get_storage.dart';
 import 'package:miogra_service/Const.dart/const_variables.dart';
 import 'package:miogra_service/DeliveryBottomNavBar.dart/homesubscreens.dart/home_screen_multi_trip.dart';
 import 'package:miogra_service/UrlList.dart/api.dart';
@@ -7,6 +8,7 @@ import 'package:get/get.dart';
 
 class ProfilScreeenController extends GetxController {
   var dataLoading = false.obs;
+var isactive =false.obs;
   var deliveryManpProfile = <dynamic>[].obs; // Keep as an observable list
 
   @override
@@ -27,12 +29,24 @@ class ProfilScreeenController extends GetxController {
 
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
+
+
+
+        print("APIIIII  ${API.profileGetApi}/$UserId");
+
         if (responseBody['data'] != null) {
           print(responseBody['data']["activeStatus"]);
           deliveryManpProfile.value = [responseBody['data']];
           parentAdminId = responseBody['data']["parentAdminUserId"];
+       
           switchValue =
               responseBody['data']["activeStatus"] == "offline" ? false : true;
+        isactive.value =   responseBody['data']["activeStatus"] == "online" ? true : false;
+bool active = responseBody['data']["activeStatus"] == "online";
+
+            await GetStorage().write('isdelactive',active);  
+           //  isdelactive =  responseBody['data']["activeStatus"] ;
+        print("HELLO GANESH $isdelactive  ");
           username = responseBody['data']["name"].toString();
         } else {}
       } else {}
