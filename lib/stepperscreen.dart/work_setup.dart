@@ -2,6 +2,7 @@
 
 import 'package:miogra_service/Controller.dart/AuthController.dart/regioncontroller.dart';
 import 'package:miogra_service/Controller.dart/AuthController.dart/registercontroller.dart';
+import 'package:miogra_service/Controller.dart/ProfileController/redirectcontroller.dart';
 import 'package:miogra_service/Model.dart/RegisterModel.dart/getregionmodel.dart';
 import 'package:miogra_service/widgets.dart/custom_button.dart';
 import 'package:miogra_service/widgets.dart/custom_disablebutton.dart';
@@ -10,6 +11,7 @@ import 'package:miogra_service/widgets.dart/custom_text.dart';
 import 'package:miogra_service/widgets.dart/custom_textstyle.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class WorkSetup extends StatefulWidget {
   final Function(int) onStepComplete;
@@ -38,7 +40,7 @@ class _WorkSetupState extends State<WorkSetup> {
   bool termsConditions = false;
   bool isLoading = false;
   late RegisterController workRegisterController;
-
+ final RedirectController redirect = Get.put(RedirectController());
   final RegionController regionController = Get.put(RegionController());
   final workformkey = GlobalKey<FormState>();
 
@@ -228,13 +230,13 @@ class _WorkSetupState extends State<WorkSetup> {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
-                          child: CustomText(
-                            text: 'Apply Delivery Kit',
-                            style: CustomTextStyle.normalBoldText,
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(left: 20.0),
+                        //   child: CustomText(
+                        //     text: 'Apply Delivery Kit',
+                        //     style: CustomTextStyle.normalBoldText,
+                        //   ),
+                        // ),
                         CustomSizedBox(height: 10),
                         Padding(
                           padding: const EdgeInsets.only(left: 20.0),
@@ -245,48 +247,64 @@ class _WorkSetupState extends State<WorkSetup> {
                           ),
                         ),
                         CustomSizedBox(height: 20),
+//                         Padding(
+//                           padding: const EdgeInsets.only(left: 20.0),
+//                           child: CheckboxListTile(
+//                             title: CustomText(
+//                               text: 'Delivery bag',
+//                               style: CustomTextStyle.normalBoldText,
+//                             ),
+//                             value: _deliveryBag,
+//                             activeColor: 
+//  Color(0xFF623089),
+//                             onChanged: (bool? value) {
+//                               setState(() {
+//                                 _deliveryBag = value!;
+//                                 workRegisterController.updateDeliveryBag(value);
+//                               });
+//                             },
+//                           ),
+//                         ),
+//                         Padding(
+//                           padding: const EdgeInsets.only(left: 20.0),
+//                           child: CheckboxListTile(
+//                             title: CustomText(
+//                               text: 'T-Shirt',
+//                               style: CustomTextStyle.normalBoldText,
+//                             ),
+//                             value: _tShirt,
+//                             activeColor: 
+//  Color(0xFF623089),
+//                             onChanged: (bool? value) {
+//                               setState(() {
+//                                 _tShirt = value!;
+//                                 workRegisterController.updateTShirt(value);
+//                               });
+//                             },
+//                           ),
+//                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
+                          padding: const EdgeInsets.only(left: 20.0,top: 20),
                           child: CheckboxListTile(
-                            title: CustomText(
-                              text: 'Delivery bag',
-                              style: CustomTextStyle.normalBoldText,
-                            ),
-                            value: _deliveryBag,
-                            activeColor: 
- Color(0xFF623089),
-                            onChanged: (bool? value) {
-                              setState(() {
-                                _deliveryBag = value!;
-                                workRegisterController.updateDeliveryBag(value);
-                              });
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
-                          child: CheckboxListTile(
-                            title: CustomText(
-                              text: 'T-Shirt',
-                              style: CustomTextStyle.normalBoldText,
-                            ),
-                            value: _tShirt,
-                            activeColor: 
- Color(0xFF623089),
-                            onChanged: (bool? value) {
-                              setState(() {
-                                _tShirt = value!;
-                                workRegisterController.updateTShirt(value);
-                              });
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
-                          child: CheckboxListTile(
-                            title: CustomText(
-                              text: 'Terms & Conditions',
-                              style: CustomTextStyle.normalBoldText,
+                            title: InkWell(
+                              onTap: () {
+                                 for (var item in redirect
+                                    .redirectLoadingDetails["data"]) {
+                                  if (item["key"] == "termsandservice") {
+                                    launchwebUrl(context, item["value"]);
+
+                                    break; // Exit loop once the "whatsappLink" is found and launched
+                                  }
+                                }
+                              },
+                              child: Text(
+                              'I agree to the Terms and Conditions',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'Poppins-Regular'),
+                              ),
                             ),
                             value: termsConditions,
                             activeColor: 
@@ -352,5 +370,19 @@ class _WorkSetupState extends State<WorkSetup> {
               ),
             ),
     );
+  }
+
+
+   void launchwebUrl(BuildContext context, String url) async {
+    try {
+      await canLaunch(url);
+      await launch(url);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Something went wrong when launching URL"),
+        ),
+      );
+    }
   }
 }

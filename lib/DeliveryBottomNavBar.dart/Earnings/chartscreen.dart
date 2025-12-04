@@ -68,32 +68,32 @@ class _ChartScreenState extends State<ChartScreen> {
                   text: 'Earning for this Day',
                   style: CustomTextStyle.earningBlackText,
                 ),
-                Row(
-                  children: [
-                    GestureDetector(
-                        onTap: _showChartDialog,
-                        child: SizedBox(
-                            height: 25,
-                            width: 25,
-                            child: _showChart
-                                ? ColorFiltered(
-                                    colorFilter: ColorFilter.mode(
-                                      Color.fromARGB(255, 249, 120, 0),
-                                      BlendMode.srcIn,
-                                    ),
-                                    child: Image.asset(
-                                        'assets/images/charticon.png'),
-                                  )
-                                : Image.asset('assets/images/charticon.png'))),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    CustomText(
-                      text: '₹0.0',
-                      style: CustomTextStyle.smallBlackText,
-                    )
-                  ],
-                )
+                // Row(
+                //   children: [
+                //     GestureDetector(
+                //         onTap: _showChartDialog,
+                //         child: SizedBox(
+                //             height: 25,
+                //             width: 25,
+                //             child: _showChart
+                //                 ? ColorFiltered(
+                //                     colorFilter: ColorFilter.mode(
+                //                       Color.fromARGB(255, 249, 120, 0),
+                //                       BlendMode.srcIn,
+                //                     ),
+                //                     child: Image.asset(
+                //                         'assets/images/charticon.png'),
+                //                   )
+                //                 : Image.asset('assets/images/charticon.png'))),
+                //     SizedBox(
+                //       width: 10,
+                //     ),
+                //     CustomText(
+                //       text: '₹0.0',
+                //       style: CustomTextStyle.smallBlackText,
+                //     )
+                //   ],
+                // )
               ],
             );
           }

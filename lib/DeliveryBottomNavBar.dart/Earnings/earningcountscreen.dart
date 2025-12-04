@@ -10,7 +10,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class EarningCountScreen extends StatefulWidget {
   final String totaldeliverycharge;
    final String totaltips;
-   EarningCountScreen({super.key, required this.totaldeliverycharge,required this.totaltips});
+    final dynamic tripAmount;
+   EarningCountScreen({super.key, required this.totaldeliverycharge,required this.totaltips, this.tripAmount});
 
   @override
   State<EarningCountScreen> createState() => _EarningCountScreenState();
@@ -100,7 +101,8 @@ class _EarningCountScreenState extends State<EarningCountScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CustomText(
-                              text: widget.totaldeliverycharge,
+                           //   text: widget.totaldeliverycharge,
+                              text: widget.tripAmount. toStringAsFixed(2),
                               style:CustomTextStyle.bigwhite,
                             ),
                             CustomText(

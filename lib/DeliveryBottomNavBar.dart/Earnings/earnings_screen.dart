@@ -1081,6 +1081,7 @@ class _EarningsScreenState extends State<EarningsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     EarningCountScreen(
+                      tripAmount: earningsProvider.datas,
                       totaltips: earningsProvider.totaltips == null
                           ? '0'
                           : earningsProvider.totaltips.toStringAsFixed(2),
@@ -1093,7 +1094,7 @@ class _EarningsScreenState extends State<EarningsScreen> {
                   ],
                 )
               ]),
-              ChartScreen(tripAmount: earningsProvider.datas,),
+             // ChartScreen(tripAmount: earningsProvider.datas,),
               Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: CustomText(
@@ -1267,7 +1268,7 @@ class EarningPaginations with ChangeNotifier {
 
   Future<void> clearData() async {
     fetchedDatas.clear();
- 
+    datas = 0;
     totalCount = 0;
     fetchCount = 0;
     deliverycharge = 0.00;
@@ -1290,7 +1291,7 @@ class EarningPaginations with ChangeNotifier {
       var response = await http.get(
         Uri.parse(
            //'${API.earningsApi}acceptedById=$UserId&limit=$limit&offset=$offset&fromDate=$startdate&toDate=$endDate&tripStatus=delivered'),
-            '${API.earnings}deliverymanId=$UserId&limit=$limit&offset=$offset&fromDate=$startdate&toDate=$endDate'),
+            '${API.earnings}deliverymanId=$UserId&limit=$limit&offset=$offset&fromDate=$startdate&toDate=$endDate&earningType=deliveryman'),
         headers: {
           'Authorization': 'Bearer $Usertoken',
           'Content-Type': 'application/json',
@@ -1299,7 +1300,7 @@ class EarningPaginations with ChangeNotifier {
       );
       print(
         //  'earningsapi${API.earningsApi}acceptedById=$UserId&limit=$limit&offset=$offset&fromDate=$startdate&toDate=$endDate&tripStatus=delivered');
-          'earningsapi${API.earnings}deliverymanId=$UserId&limit=$limit&offset=$offset&fromDate=$startdate&toDate=$endDate');
+          'earningsapi${API.earnings}deliverymanId=$UserId&limit=$limit&offset=$offset&fromDate=$startdate&toDate=$endDate&earningType=deliveryman');
       print(response.statusCode);
       print(response.body);
 

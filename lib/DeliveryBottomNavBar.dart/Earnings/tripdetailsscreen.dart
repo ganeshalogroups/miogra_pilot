@@ -786,15 +786,19 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
   Widget build(BuildContext context) {
 
    // print("AAAAAA  ${widget.earnings}");
-    final List<String> cost = [
-      'Item Total',
-      'GST',
-      'Delivery partner fee(up to ${widget.earnings['orderDetails']?['totalKms'] ?? '0.0'} km)',
-      "Packing Charge",
-      "Platform Fee",
-      "Delivery Tip",
-      "Coupon Discount",
-    ];
+
+
+    // final List<String> cost = [
+    //   'Item Total',
+    //   'GST',
+    //   'Delivery partner fee(up to ${widget.earnings['orderDetails']?['totalKms'] ?? '0.0'} km)',
+    //   "Packing Charge",
+    //   "Platform Fee",
+    //   "Delivery Tip",
+    //   "Coupon Discount",
+    // ];
+
+
     var earningsDetails = widget.earnings!;
     var orderId = earningsDetails['orderDetails']?['orderCode'] ?? 'N/A';
     var orderType = earningsDetails['orderDetails']?['subAdminType'] ?? 'N/A';
@@ -830,9 +834,9 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
             .toString() ??
         '₹0.00';
 
-    var gst =
-        earningsDetails['orderDetails']?['amountDetails']?['tax'].toString() ??
-            '₹0.00';
+    var gst = ((earningsDetails['orderDetails']?['amountDetails']?['tax'] ?? 0) +
+                (earningsDetails['orderDetails']?['amountDetails']?['otherCharges'] ?? 0))
+                .toString();
     var deliverytip =
         earningsDetails['orderDetails']?['amountDetails']?['tips'].toString() ??
             '₹0.00';
@@ -842,6 +846,10 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
         '₹0.00';
     var coupenDiscount = earningsDetails['orderDetails']?['amountDetails']
                 ?['couponsAmount']
+            .toString() ??
+        '₹0.00';
+    var commissionres = earningsDetails['orderDetails']?['amountDetails']
+                ?['commissionAmount']
             .toString() ??
         '₹0.00';
     var grandTotal = earningsDetails['orderDetails']?['amountDetails']
@@ -919,15 +927,68 @@ print("  BBBBBBB  $ordersummaryDetails");
       ratingList.toString(),
     ];
 
-    final List<String> costDetails = [
-      '₹ ${double.tryParse(itemTotal)?.toStringAsFixed(2) ?? "0.00"}',
-      '₹ ${double.tryParse(gst)?.toStringAsFixed(2) ?? "0.00"}',
-      '₹ ${double.tryParse(deliveryCharges)?.toStringAsFixed(2) ?? "0.00"}',
-      '₹ ${double.tryParse(packingcharge)?.toStringAsFixed(2) ?? "0.00"}',
-      '₹ ${double.tryParse(platformfee)?.toStringAsFixed(2) ?? "0.00"}',
-      '₹ ${double.tryParse(deliverytip)?.toStringAsFixed(2) ?? "0.00"}',
-      coupenDiscount == '0' ? '₹$coupenDiscount' : '-₹$coupenDiscount',
-    ];
+    // final List<String> costDetails = [
+    //   '₹ ${double.tryParse(itemTotal)?.toStringAsFixed(2) ?? "0.00"}',
+    //   '₹ ${double.tryParse(gst)?.toStringAsFixed(2) ?? "0.00"}',
+    //   '₹ ${double.tryParse(deliveryCharges)?.toStringAsFixed(2) ?? "0.00"}',
+    //   '₹ ${double.tryParse(packingcharge)?.toStringAsFixed(2) ?? "0.00"}',
+    //   '₹ ${double.tryParse(platformfee)?.toStringAsFixed(2) ?? "0.00"}',
+    //   '₹ ${double.tryParse(deliverytip)?.toStringAsFixed(2) ?? "0.00"}',
+    //   coupenDiscount == '0' ? '₹$coupenDiscount' : '-₹$coupenDiscount',
+    // ];
+
+
+
+
+final List<String> cost = [];
+final List<String> costDetails = [];
+
+// Always show
+cost.add("Item Total");
+costDetails.add("₹ ${double.tryParse(itemTotal)?.toStringAsFixed(2) ?? "0.00"}");
+
+cost.add("GST and Other Charges");
+costDetails.add("₹ ${double.tryParse(gst)?.toStringAsFixed(2) ?? "0.00"}");
+
+cost.add("Delivery partner fee(up to ${widget.earnings['orderDetails']?['totalKms'] ?? '0.0'} km)");
+costDetails.add("₹ ${double.tryParse(deliveryCharges)?.toStringAsFixed(2) ?? "0.00"}");
+
+cost.add("Packing Charge");
+costDetails.add("₹ ${double.tryParse(packingcharge)?.toStringAsFixed(2) ?? "0.00"}");
+
+cost.add("Platform Fee");
+costDetails.add("₹ ${double.tryParse(platformfee)?.toStringAsFixed(2) ?? "0.00"}");
+
+// Show Delivery Tip only if > 0
+final tip = double.tryParse(deliverytip) ?? 0;
+if (tip > 0) {
+  cost.add("Delivery Tip");
+  costDetails.add("₹ ${tip.toStringAsFixed(2)}");
+}
+
+// Show Coupon Discount only if > 0
+final discount = double.tryParse(coupenDiscount) ?? 0;
+if (discount > 0) {
+  cost.add("Coupon Discount");
+  costDetails.add("-₹ ${discount.toStringAsFixed(2)}");
+}
+
+final commission = double.tryParse(commissionres) ?? 0;
+if (commission > 0) {
+  cost.add("Commission");
+  costDetails.add("₹ ${commission.toStringAsFixed(2)}");
+}
+
+
+
+
+
+
+
+
+
+
+    
     var parcelImage = earningsDetails['orderDetails']?['parcelDetails']
             ?['packageImage'] ??
         'Unknown';

@@ -317,7 +317,7 @@ class OrderUpdateController extends GetxController {
         print("API CALLED");
       } else {
         deliveredUpdateData = null;
-         print("API NOT CALLED");
+         print("API NOT CALLED  ${response.body}");
       }
     } catch (e) {
       // print('$e');

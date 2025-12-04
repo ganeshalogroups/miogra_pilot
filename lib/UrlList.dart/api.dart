@@ -2,10 +2,14 @@ import 'package:miogra_service/Const.dart/const_variables.dart';
 
 class API {
  
-   //static String microService = "https://miogra.com/";
+   //static String microService = "https://backend.miogra.com/";
+
+
 
    // Dev
    static String microService = "https://dev.miogra.com/";
+
+
 
   //request-Login api
   static String requestOtp = '${microService}api/user/requestOtp';

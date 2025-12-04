@@ -2344,6 +2344,498 @@
 
 
 
+// import 'package:just_audio/just_audio.dart';
+// import 'package:miogra_service/AuthScreen.dart/splashscreen.dart';
+// import 'package:miogra_service/Const.dart/const_variables.dart';
+// import 'package:miogra_service/Const.dart/time_convert_values.dart';
+// import 'package:miogra_service/Controller.dart/AuthController.dart/regioncontroller.dart';
+// import 'package:miogra_service/DeliveryBottomNavBar.dart/ProfileSubScreens.dart/provider/deposite_pagin_provider.dart';
+// import 'package:miogra_service/DeliveryBottomNavBar.dart/homesubscreens.dart/restaurent_bottomsheet.dart';
+// import 'package:miogra_service/firebase_options.dart';
+// import 'package:miogra_service/overlay/eg.dart';
+// import 'package:miogra_service/widgets.dart/custom_button.dart';
+// import 'package:miogra_service/widgets.dart/custom_textstyle.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:get/get.dart';
+// import 'package:get_storage/get_storage.dart';
+// import 'package:provider/provider.dart';
+// import 'package:responsive_builder/responsive_builder.dart';
+// import 'DeliveryBottomNavBar.dart/Earnings/earnings_screen.dart';
+
+// import 'dart:async';
+
+// final AudioPlayer alarmPlayer = AudioPlayer();
+// bool isAlarmPlaying = false;
+
+
+
+// String? lastBgMessageId;   // 💾 stores last background message id
+
+// String? tokenFCM;
+
+// Future<void> startAlarm() async {
+//   try {
+//     if (isAlarmPlaying) return; // avoid duplicate start
+
+//     print("🔔 Starting alarm...");
+
+//     await alarmPlayer.seek(Duration.zero);
+//     await alarmPlayer.play();
+
+//     isAlarmPlaying = true;
+
+//   } catch (e) {
+//     print("❌ Alarm play error: $e");
+//   }
+// }
+
+// Future<void> stopAlarm() async {
+//   try {
+//     await alarmPlayer.stop();
+//     isAlarmPlaying = false;
+//     print("🛑 Alarm stopped");
+//   } catch (e) {
+//     print("❌ Error stopping alarm: $e");
+//   }
+// }
+
+// Future<void> preloadAlarmSound() async {
+//   try {
+//     await alarmPlayer.setAsset('assets/clock_alarm.wav');
+//     print("🎵 Alarm sound preloaded & ready");
+//   } catch (e) {
+//     print("❌ Preload failed: $e");
+//   }
+// }
+// Future<void> askNotificationPermission() async {
+//   final status = await FirebaseMessaging.instance.requestPermission(
+//     alert: true,
+//     badge: true,
+//     sound: true,
+//     criticalAlert: true,
+//     provisional: false,
+//   );
+
+//   print("🔔 Notification Permission = ${status.authorizationStatus}");
+// }
+
+
+// //////>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// @pragma('vm:entry-point')
+// Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   await Firebase.initializeApp();
+//   print("Handling a background message: ${message.messageId}");
+//   print(message.data);
+
+//  // Ignore image prefetch messages (they contain no title/body/messageId)
+// if (!message.data.containsKey("messageId") ||
+//     !message.data.containsKey("title") ||
+//     !message.data.containsKey("body")) {
+//   print("⚠️ Ignored image-prefetch/background utility message");
+//   return;
+// }
+
+// String messageId = message.data['messageId']!;
+
+// // Duplicate protection
+// if (lastBgMessageId == messageId) {
+//   print("🔁 Duplicate BACKGROUND notification skipped");
+//   return;
+// }
+
+// lastBgMessageId = messageId;
+
+//   print("🆕 New BACKGROUND message: $messageId");
+
+// }
+
+// //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+// final AndroidNotificationChannel channel = const AndroidNotificationChannel(
+//   'high_importance_channel',
+//   'High Importance Notifications',
+//   description: 'Used for order alerts and important updates.',
+//   importance: Importance.max,
+//   playSound: true,
+//   sound: RawResourceAndroidNotificationSound('clock_alarm'),
+// );
+// final AndroidNotificationChannel channel2 = const AndroidNotificationChannel(
+//   'foreground_channel',
+//   'Foreground Notifications',
+//   description: 'Silent system notification when app is open',
+//   importance: Importance.max,
+//   playSound: true, // 🚫 disables system sound in foreground
+
+// );
+
+
+
+// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+//     FlutterLocalNotificationsPlugin();
+
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+
+// // await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+//   FirebaseMessaging.instance.getToken().then((value) {
+//     print(' ---FCM--${value.toString()}--');
+//     fcmToken = value.toString();
+//   });
+
+//   FirebaseMessaging.instance.requestPermission(
+//     badge: true,
+//     sound: true,
+//     alert: true,
+//   );
+//   ///commented
+// FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+//   ///
+//   await flutterLocalNotificationsPlugin
+//       .resolvePlatformSpecificImplementation<
+//           AndroidFlutterLocalNotificationsPlugin>()
+//       ?.createNotificationChannel(channel);
+
+//   await flutterLocalNotificationsPlugin
+//       .resolvePlatformSpecificImplementation<
+//           AndroidFlutterLocalNotificationsPlugin>()
+//       ?.createNotificationChannel(channel2);
+
+ 
+
+//   await GetStorage.init();
+//   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+//       .then((_) {
+//     Get.put(RegionController());
+//     runApp(const MyApp());
+//   });
+// }
+
+
+// @pragma("vm:entry-point")
+// void overlayMain() {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   runApp(
+//     const MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: MessangerChatHead(),
+//      // home: TrueCallerOverlay(),
+//     ),
+//   );
+// }
+
+// class MyApp extends StatefulWidget {
+//   const MyApp({super.key});
+
+//   @override
+//   State<MyApp> createState() => _MyAppState();
+// }
+
+// class _MyAppState extends State<MyApp> {
+//   @override
+//   @override
+//   void initState() {
+//     super.initState();
+//      WidgetsBinding.instance.addPostFrameCallback((_) {
+//        askNotificationPermission(); 
+//     preloadAlarmSound();
+//   });
+
+//    currentDateGlobal= TimerdataService().apiselectdateCallDate();
+//     // Initialize notification plugin
+//     var initializationSettingsAndroid =
+//         AndroidInitializationSettings('@mipmap/ic_launcher');
+//     var initializationSettings =
+//         InitializationSettings(android: initializationSettingsAndroid);
+//     flutterLocalNotificationsPlugin.initialize(
+//       initializationSettings,
+//       onDidReceiveNotificationResponse: (NotificationResponse response) {
+//         print("+++++++++++++++++++++++++++++++++++++++++++++");
+//         print(response.payload);
+//         String? targetScreen = response.payload;
+//         if (targetScreen != null && targetScreen != "none") {
+//         Get.to(() =>     RestaurentBottomSheet(
+//           onReachedRestaurant: () {},
+//           reachedDelLocation: false,
+//           deltype: "",
+//           id: targetScreen.toString(),
+//           orderId: "",
+//           onBackPressed: () {
+//             Navigator.pop(context);
+//           },
+//         ));
+        
+//         }
+//       },
+//     );
+
+
+
+//     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+//       print("📲 App opened via notification");
+//       String? targetScreen = message.data['screen']; // Example key
+
+//       if (targetScreen != null && targetScreen != "none") {
+//         print("+++++++++++++++++++++++++++++++++++++++++++++");
+//         print(targetScreen);
+//        Get.to(() =>  RestaurentBottomSheet(
+//           onReachedRestaurant: () {},
+//           reachedDelLocation: false,
+//           deltype: "",
+//           id: targetScreen.toString(),
+//           orderId: "",
+//           onBackPressed: () {
+//             Navigator.pop(context);
+//           },
+//         ));
+
+    
+//       }
+//     });
+
+ 
+
+    
+//     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+
+
+//       RemoteNotification? notification = message.notification;
+//       AndroidNotification? android = message.notification?.android;
+
+//       if (notification != null && android != null) {
+
+
+
+
+
+
+//         flutterLocalNotificationsPlugin.show(
+//   notification.hashCode,
+//  notification.title ?? "Notification",
+//   notification.body??"New TriP Started",
+//   payload: message.data['screen'].toString(),
+//   NotificationDetails(
+//     android: AndroidNotificationDetails(
+//        channel2.id,
+//        channel2.name,
+//        channelDescription: channel2.description,
+//        playSound: false,
+//       //sound:RawResourceAndroidNotificationSound('clock_alarm') ,
+    
+//       importance: Importance.max,
+//       priority: Priority.high,
+//     ),
+//   ),
+  
+// );
+// Future.delayed(const Duration(milliseconds: 150), () {
+//   startAlarm();
+// });
+
+//  // startAlarm();    
+
+//   // final isForeground =
+//   //       WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed;
+
+//   //   if (isForeground) {
+//   //     print("📱 App is in FOREGROUND → play manual sound");
+//   //      startAlarm();        // custom sound (just_audio)
+//   //   } else {
+//   //      startAlarm();   
+//   //     print("📴 App NOT in foreground → skip manual sound");
+//   //     // Background notification will play its own sound from FCM payload
+//   //   }
+  
+//         // Show custom AlertDialog (only one!)
+//         BuildContext? dialogContext = Get.context;
+//         if (dialogContext != null) {
+      
+//            showDialog(
+//   context: dialogContext,
+//   builder: (_) => Theme(
+//     data: ThemeData(
+//     //  dialogTheme: DialogTheme(backgroundColor: Colors.white),
+//     ),
+//     child: Dialog(
+//       backgroundColor: Colors.transparent,
+//       insetPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 40),
+//       child: Stack(
+//         clipBehavior: Clip.none,
+//         children: [
+//           Container(
+//               width: MediaQuery.of(context).size.width * 0.75, // 👈 Set dialog width
+//             padding: const EdgeInsets.only(top: 20, right: 10, left: 10, bottom: 10),
+//             decoration: BoxDecoration(
+//               color: Colors.white,
+//               borderRadius: BorderRadius.circular(12),
+//             ),
+//             // padding: EdgeInsets.only(top: 20, right: 10, left: 10, bottom: 10),
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: [
+//                 Text(notification.title ?? 'New Notification',style:CustomTextStyle.normalmediumText),
+//                 const SizedBox(height: 10),
+//                Text(notification.body ?? 'You have a new message.',style:CustomTextStyle.tripText),
+//                 const SizedBox(height: 20),
+//                 Center(
+//                   child: CustomButton(
+//                     width: 100,
+//                     borderRadius: BorderRadius.circular(20),
+//                     onPressed: (){
+
+//                       print("SSSSSSSssssss   ${notification.title}");
+//                       print("SSSSSSSssssss   ${notification.body}");
+                      
+//                    stopAlarm();
+
+
+//                                             Get.to(() =>   RestaurentBottomSheet(
+//                                 onReachedRestaurant: () {},
+//                                 reachedDelLocation: false,
+//                                 deltype: "",
+//                                 id: message.data['screen'].toString(),
+//                                 orderId: "",
+//                                 onBackPressed: () {
+//                                   Navigator.pop(context);
+//                                 },
+//                               ));
+//                     },
+//                     child: Text(
+//                       'Ok',
+//                       style: CustomTextStyle.updateButtonText,
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+
+//           // Close icon button
+//           Positioned(
+//             top: -5,
+//             right: -5,
+//             child: Container(
+//               height: 35,
+//               width: 35,
+//               alignment: Alignment.center,
+//               decoration: BoxDecoration(
+//                 shape: BoxShape.circle,
+//                 color: Colors.grey.shade300,
+//               ), 
+//               child: IconButton(
+//                 icon: Icon(Icons.close,size: 20,),
+//                 onPressed: (){ 
+//                   stopAlarm();
+//                   Navigator.of(dialogContext).pop();}
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     ),
+//   ),
+// );  
+
+//         } else {
+//           print("⚠️ Get.context is null, dialog not shown");
+//           showDialog(
+//             context: context,
+//             builder: (context) {
+//               return AlertDialog(
+//                 title: Text(notification.title.toString()),
+//                 content: Text(notification.body.toString()),
+//               );
+//             },
+//           );
+//         }
+//       }
+     
+//     }
+//     );
+//   }
+ 
+
+
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ResponsiveApp(builder: (BuildContext context) {
+//       return MultiProvider(
+//         providers: [
+//           ChangeNotifierProvider(create: (context) => EarningPaginations()),
+//           ChangeNotifierProvider(create: (context) => DepositProviderPagin()),
+//         ],
+//         child: GetMaterialApp(
+//           builder: (BuildContext context, Widget? child) {
+//             return MediaQuery(
+//               data: MediaQuery.of(context).copyWith(
+//                 textScaler: const TextScaler.linear(1.0),
+//               ),
+//               child: child!,
+//             );
+//           },
+//           title: 'FastX-Partner',
+//           theme: ThemeData(
+//             fontFamily: 'Poppins-Regular',
+//             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+//             useMaterial3: true,
+//           ),
+//           debugShowCheckedModeBanner: false,
+//           home:
+            
+
+//               SplashScreen(),
+            
+//         ),
+//       );
+//     });
+//   }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import 'package:just_audio/just_audio.dart';
 import 'package:miogra_service/AuthScreen.dart/splashscreen.dart';
 import 'package:miogra_service/Const.dart/const_variables.dart';
@@ -2352,6 +2844,7 @@ import 'package:miogra_service/Controller.dart/AuthController.dart/regioncontrol
 import 'package:miogra_service/DeliveryBottomNavBar.dart/ProfileSubScreens.dart/provider/deposite_pagin_provider.dart';
 import 'package:miogra_service/DeliveryBottomNavBar.dart/homesubscreens.dart/restaurent_bottomsheet.dart';
 import 'package:miogra_service/firebase_options.dart';
+import 'package:miogra_service/notification.dart';
 import 'package:miogra_service/overlay/eg.dart';
 import 'package:miogra_service/widgets.dart/custom_button.dart';
 import 'package:miogra_service/widgets.dart/custom_textstyle.dart';
@@ -2368,8 +2861,8 @@ import 'DeliveryBottomNavBar.dart/Earnings/earnings_screen.dart';
 
 import 'dart:async';
 
-final AudioPlayer alarmPlayer = AudioPlayer();
-bool isAlarmPlaying = false;
+// final AudioPlayer alarmPlayer = AudioPlayer();
+// bool isAlarmPlaying = false;
 
 
 
@@ -2377,40 +2870,40 @@ String? lastBgMessageId;   // 💾 stores last background message id
 
 String? tokenFCM;
 
-Future<void> startAlarm() async {
-  try {
-    if (isAlarmPlaying) return; // avoid duplicate start
+// Future<void> startAlarm() async {
+//   try {
+//     if (isAlarmPlaying) return; // avoid duplicate start
 
-    print("🔔 Starting alarm...");
+//     print("🔔 Starting alarm...");
 
-    await alarmPlayer.seek(Duration.zero);
-    await alarmPlayer.play();
+//     await alarmPlayer.seek(Duration.zero);
+//     await alarmPlayer.play();
 
-    isAlarmPlaying = true;
+//     isAlarmPlaying = true;
 
-  } catch (e) {
-    print("❌ Alarm play error: $e");
-  }
-}
+//   } catch (e) {
+//     print("❌ Alarm play error: $e");
+//   }
+// }
 
-Future<void> stopAlarm() async {
-  try {
-    await alarmPlayer.stop();
-    isAlarmPlaying = false;
-    print("🛑 Alarm stopped");
-  } catch (e) {
-    print("❌ Error stopping alarm: $e");
-  }
-}
+// Future<void> stopAlarm() async {
+//   try {
+//     await alarmPlayer.stop();
+//     isAlarmPlaying = false;
+//     print("🛑 Alarm stopped");
+//   } catch (e) {
+//     print("❌ Error stopping alarm: $e");
+//   }
+// }
 
-Future<void> preloadAlarmSound() async {
-  try {
-    await alarmPlayer.setAsset('assets/clock_alarm.wav');
-    print("🎵 Alarm sound preloaded & ready");
-  } catch (e) {
-    print("❌ Preload failed: $e");
-  }
-}
+// Future<void> preloadAlarmSound() async {
+//   try {
+//     await alarmPlayer.setAsset('assets/clock_alarm.wav');
+//     print("🎵 Alarm sound preloaded & ready");
+//   } catch (e) {
+//     print("❌ Preload failed: $e");
+//   }
+// }
 Future<void> askNotificationPermission() async {
   final status = await FirebaseMessaging.instance.requestPermission(
     alert: true,
@@ -2463,14 +2956,6 @@ final AndroidNotificationChannel channel = const AndroidNotificationChannel(
   playSound: true,
   sound: RawResourceAndroidNotificationSound('clock_alarm'),
 );
-final AndroidNotificationChannel channel2 = const AndroidNotificationChannel(
-  'foreground_channel',
-  'Foreground Notifications',
-  description: 'Silent system notification when app is open',
-  importance: Importance.max,
-  playSound: true, // 🚫 disables system sound in foreground
-
-);
 
 
 
@@ -2503,11 +2988,7 @@ FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel2);
-
+  
  
 
   await GetStorage.init();
@@ -2539,14 +3020,131 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
+
+void _showOrderDialog(RemoteMessage message, NotificationController notify) {
+   
+  // showDialog(
+  //   context: Get.context!,
+  //   builder: (ctx) {
+  //     return AlertDialog(
+  //       title: Text(message.notification?.title ?? "New Notification"),
+  //       content: Text(message.notification?.body ?? "You have a new alert"),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () {
+  //             notify.stopSound();
+  //             Navigator.pop(ctx);
+  //           },
+  //           child: Text("Stop"),
+  //         )
+  //       ],
+  //     );
+  //   },
+  // );
+
+
+
+
+             showDialog(
+  context: Get.context!,
+  builder: (ctx) {
+    return Theme(
+    data: ThemeData(
+    //  dialogTheme: DialogTheme(backgroundColor: Colors.white),
+    ),
+    child: Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 40),
+      child: Container(
+          width: MediaQuery.of(ctx).size.width * 0.75, // 👈 Set dialog width
+        padding: const EdgeInsets.only(top: 20, right: 10, left: 10, bottom: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        // padding: EdgeInsets.only(top: 20, right: 10, left: 10, bottom: 10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text( 'New Notification',style:CustomTextStyle.normalmediumText),
+            const SizedBox(height: 10),
+           Text( 'You have a new message.',style:CustomTextStyle.tripText),
+            const SizedBox(height: 20),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CustomButton(
+                 // width: 100,
+                  borderRadius: BorderRadius.circular(10),
+                  onPressed: (){
+                
+                notify.stopSound();
+                              Navigator.pop(ctx);
+                    
+                 
+                
+                
+                                          Get.to(() =>   RestaurentBottomSheet(
+                              onReachedRestaurant: () {},
+                              reachedDelLocation: false,
+                              deltype: "",
+                              id: message.data['screen'].toString(),
+                              orderId: "",
+                              onBackPressed: () {
+                                
+                              },
+                            ));
+                  },
+                  child: Text(
+                    'Ok',
+                    style: CustomTextStyle.updateButtonText,
+                  ),
+                ),
+                CustomButton(
+                 // width: 100,
+                  borderRadius: BorderRadius.circular(10),
+                  onPressed: (){
+               
+                notify.stopSound();
+                           Navigator.pop(ctx);    
+                    
+                 
+                
+                
+                  },
+                  child: Text(
+                    'Cancel',
+                    style: CustomTextStyle.updateButtonText,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ),
+  );}
+);  
+}
+
+
+
+
   @override
   void initState() {
     super.initState();
      WidgetsBinding.instance.addPostFrameCallback((_) {
        askNotificationPermission(); 
-    preloadAlarmSound();
+   // preloadAlarmSound();
   });
+FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  final notify = Provider.of<NotificationController>(
+      Get.context!,
+      listen: false);
+
+  notify.playSound();
+
+  _showOrderDialog(message, notify);
+});
 
    currentDateGlobal= TimerdataService().apiselectdateCallDate();
     // Initialize notification plugin
@@ -2598,166 +3196,128 @@ class _MyAppState extends State<MyApp> {
 
     
       }
-    });
+    }
 
  
 
     
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+//     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
 
 
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-
-      if (notification != null && android != null) {
-
-
-
-
-
-
-        flutterLocalNotificationsPlugin.show(
-  notification.hashCode,
- notification.title ?? "Notification",
-  notification.body??"New TriP Started",
-  payload: message.data['screen'].toString(),
-  NotificationDetails(
-    android: AndroidNotificationDetails(
-       channel2.id,
-       channel2.name,
-       channelDescription: channel2.description,
-       playSound: false,
-      //sound:RawResourceAndroidNotificationSound('clock_alarm') ,
-    
-      importance: Importance.max,
-      priority: Priority.high,
-    ),
-  ),
-  
-);
-Future.delayed(const Duration(milliseconds: 150), () {
-  startAlarm();
-});
-
- // startAlarm();    
-
-  // final isForeground =
-  //       WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed;
-
-  //   if (isForeground) {
-  //     print("📱 App is in FOREGROUND → play manual sound");
-  //      startAlarm();        // custom sound (just_audio)
-  //   } else {
-  //      startAlarm();   
-  //     print("📴 App NOT in foreground → skip manual sound");
-  //     // Background notification will play its own sound from FCM payload
-  //   }
-  
-        // Show custom AlertDialog (only one!)
-        BuildContext? dialogContext = Get.context;
-        if (dialogContext != null) {
-      
-           showDialog(
-  context: dialogContext,
-  builder: (_) => Theme(
-    data: ThemeData(
-    //  dialogTheme: DialogTheme(backgroundColor: Colors.white),
-    ),
-    child: Dialog(
-      backgroundColor: Colors.transparent,
-      insetPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 40),
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-              width: MediaQuery.of(context).size.width * 0.75, // 👈 Set dialog width
-            padding: const EdgeInsets.only(top: 20, right: 10, left: 10, bottom: 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            // padding: EdgeInsets.only(top: 20, right: 10, left: 10, bottom: 10),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(notification.title ?? 'New Notification',style:CustomTextStyle.normalmediumText),
-                const SizedBox(height: 10),
-               Text(notification.body ?? 'You have a new message.',style:CustomTextStyle.tripText),
-                const SizedBox(height: 20),
-                Center(
-                  child: CustomButton(
-                    width: 100,
-                    borderRadius: BorderRadius.circular(20),
-                    onPressed: (){
-
-                      print("SSSSSSSssssss   ${notification.title}");
-                      print("SSSSSSSssssss   ${notification.body}");
-                      
-                   stopAlarm();
-
-
-                                            Get.to(() =>   RestaurentBottomSheet(
-                                onReachedRestaurant: () {},
-                                reachedDelLocation: false,
-                                deltype: "",
-                                id: message.data['screen'].toString(),
-                                orderId: "",
-                                onBackPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ));
-                    },
-                    child: Text(
-                      'Ok',
-                      style: CustomTextStyle.updateButtonText,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Close icon button
-          Positioned(
-            top: -5,
-            right: -5,
-            child: Container(
-              height: 35,
-              width: 35,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey.shade300,
-              ), 
-              child: IconButton(
-                icon: Icon(Icons.close,size: 20,),
-                onPressed: (){ 
-                  stopAlarm();
-                  Navigator.of(dialogContext).pop();}
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),
-  ),
-);  
-
-        } else {
-          print("⚠️ Get.context is null, dialog not shown");
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text(notification.title.toString()),
-                content: Text(notification.body.toString()),
-              );
-            },
-          );
-        }
-      }
      
-    }
+
+     
+
+
+
+
+
+
+// Future.delayed(const Duration(milliseconds: 150), () {
+//   startAlarm();
+// });
+
+//         BuildContext? dialogContext = Get.context;
+//         if (dialogContext != null) {
+      
+//            showDialog(
+//   context: dialogContext,
+//   builder: (_) => Theme(
+//     data: ThemeData(
+   
+//     ),
+//     child: Dialog(
+//       backgroundColor: Colors.transparent,
+//       insetPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 40),
+//       child: Stack(
+//         clipBehavior: Clip.none,
+//         children: [
+//           Container(
+//               width: MediaQuery.of(context).size.width * 0.75, 
+//             padding: const EdgeInsets.only(top: 20, right: 10, left: 10, bottom: 10),
+//             decoration: BoxDecoration(
+//               color: Colors.white,
+//               borderRadius: BorderRadius.circular(12),
+//             ),
+          
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: [
+//                 Text( 'New Notification',style:CustomTextStyle.normalmediumText),
+//                 const SizedBox(height: 10),
+//                Text( 'You have a new message.',style:CustomTextStyle.tripText),
+//                 const SizedBox(height: 20),
+//                 Center(
+//                   child: CustomButton(
+//                     width: 100,
+//                     borderRadius: BorderRadius.circular(20),
+//                     onPressed: (){
+
+                     
+//                    stopAlarm();
+
+
+//                                             Get.to(() =>   RestaurentBottomSheet(
+//                                 onReachedRestaurant: () {},
+//                                 reachedDelLocation: false,
+//                                 deltype: "",
+//                                 id: message.data['screen'].toString(),
+//                                 orderId: "",
+//                                 onBackPressed: () {
+//                                   Navigator.pop(context);
+//                                 },
+//                               ));
+//                     },
+//                     child: Text(
+//                       'Ok',
+//                       style: CustomTextStyle.updateButtonText,
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+
+//           // Close icon button
+//           Positioned(
+//             top: -5,
+//             right: -5,
+//             child: Container(
+//               height: 35,
+//               width: 35,
+//               alignment: Alignment.center,
+//               decoration: BoxDecoration(
+//                 shape: BoxShape.circle,
+//                 color: Colors.grey.shade300,
+//               ), 
+//               child: IconButton(
+//                 icon: Icon(Icons.close,size: 20,),
+//                 onPressed: (){ 
+//                   stopAlarm();
+//                   Navigator.of(dialogContext).pop();}
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     ),
+//   ),
+// );  
+
+//         } else {
+//           print("⚠️ Get.context is null, dialog not shown");
+//           showDialog(
+//             context: context,
+//             builder: (context) {
+//               return AlertDialog(
+//                 title: Text(""),
+//                 content: Text(""),
+//               );
+//             },
+//           );
+//         }
+  
+//     }
     );
   }
  
@@ -2771,6 +3331,8 @@ Future.delayed(const Duration(milliseconds: 150), () {
         providers: [
           ChangeNotifierProvider(create: (context) => EarningPaginations()),
           ChangeNotifierProvider(create: (context) => DepositProviderPagin()),
+           ChangeNotifierProvider(
+    create: (_) => NotificationController()),
         ],
         child: GetMaterialApp(
           builder: (BuildContext context, Widget? child) {
@@ -2781,7 +3343,7 @@ Future.delayed(const Duration(milliseconds: 150), () {
               child: child!,
             );
           },
-          title: 'FastX-Partner',
+          title: 'Miogra Pilot',
           theme: ThemeData(
             fontFamily: 'Poppins-Regular',
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
