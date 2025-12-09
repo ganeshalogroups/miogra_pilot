@@ -47,7 +47,8 @@ class OrderOnProcessController extends GetxController {
             "accepted",
             "reachedPickup",
             "pickuped",
-            "reachedDelivery"
+            "reachedDelivery",
+          
           ]
         }),
       );
@@ -63,11 +64,16 @@ class OrderOnProcessController extends GetxController {
             "reachedDelivery"
           ]
         }}");
+         print("USHA ${response.statusCode  } ");
+        
+         print("MESSAGE ${response.body  } ");
+         print("MESSAGE ${API.barStatus } ");
+
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         allProgressData = result;
         print("ongoing ***************************${API.barStatus}****");
-        print(allProgressData);
+        print(" AAAA  $allProgressData");
 
         if (result.containsKey('data') && result['data'] is Map) {
           var data = result['data'];
@@ -84,6 +90,8 @@ class OrderOnProcessController extends GetxController {
           orderOnProcessData.value = null;
         }
       } else {
+      //   allProgressData = null;
+         print("GANAPATHY");
         orderOnProcessData.value = null;
       }
     } catch (e) {

@@ -461,11 +461,18 @@ class _NewTripCartDesignState extends State<NewTripCartDesign> {
                 if (!switchValue) {
                   _showNotification(
                       'You are currently inactive. Activate your status to proceed.');
-                } else {
+                } 
+                
+                // else if(orderUpdateController.orderErrorMessage.value.toString().contains("You Have Already Accecpted another order")) {
+
+
+                // }
+                else {
                   final tripData = widget.dataList[widget.index];
                   final tripStatus = widget.tripStatus;
                   handleButtonTap(tripStatus, tripData);
-                  widget.onAccept?.call();
+
+                  // widget.onAccept?.call();
                   print("THE BUTTON IS PRESSED");
                 }
               },
@@ -917,13 +924,16 @@ class _NewTripCartDesignState extends State<NewTripCartDesign> {
         UserId,
         DateTime.now(),
         tripData['totalKm'] ?? '',
-      )
-          .whenComplete(() {
+      );
+         // .whenComplete(() {
         // Get.offAll(
         //     DeliveryBottomNavigation(initialIndex: 0, showBottomSheet: false));
-      });
-
-      _showNotification("Trip started successfully");
+     // });
+if(orderUpdateController.orderErrorMessage.value==""){
+     _showNotification("Trip started successfully");
+      widget.onAccept?.call();
+}
+  
 
       return;
     }

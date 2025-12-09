@@ -116,9 +116,9 @@ class _VehicleInformationState extends State<VehicleInformation> {
             vehNumber==null &&
                 _vehicleType != null &&
                 _licenseFront != null &&
-                _licenseBack != null &&
-                _rc != null &&
-                _insurance != null;
+                _licenseBack != null; 
+               // _rc != null &&
+              //  _insurance != null;
       });
       vehicleRegisterController.updateVehicleInfoStatus(_isFormsValid);
     }
@@ -327,71 +327,71 @@ class _VehicleInformationState extends State<VehicleInformation> {
                         File(vehicleRegisterController.licenseBackUrl.value),
                   ),
                   CustomSizedBox(height: 10),
-                  CustomText(
-                    text: 'RC',
-                    style: CustomTextStyle.identityGreyText,
-                  ),
-                  CustomSizedBox(height: 10),
-                  IdentityProof(
-                    onFileChosen: (File? image) async {
-                      if (image != null) {
-                        setState(() {
-                          _isUploading = true;
-                        });
+                  // CustomText(
+                  //   text: 'RC',
+                  //   style: CustomTextStyle.identityGreyText,
+                  // ),
+                  // CustomSizedBox(height: 10),
+                  // IdentityProof(
+                  //   onFileChosen: (File? image) async {
+                  //     if (image != null) {
+                  //       setState(() {
+                  //         _isUploading = true;
+                  //       });
 
-                        _rc = image;
-                        final url =
-                            await imageUploader.uploadRCImage(file: image);
+                  //       _rc = image;
+                  //       final url =
+                  //           await imageUploader.uploadRCImage(file: image);
 
-                        if (url != null) {
-                          vehicleRegisterController.updateRcUrl(url);
-                          setState(() {
-                            _rc = image;
-                            _isUploading = false;
-                          });
-                        } else {
-                          setState(() {
-                            _isUploading = false;
-                          });
-                          // Handle upload failure
-                        }
-                        _validateForm();
-                      }
-                    },
-                    label: 'RC Front',
-                    initialFile: File(vehicleRegisterController.rcUrl.value),
-                  ),
-                  CustomSizedBox(height: 10),
-                  IdentityProof(
-                    onFileChosen: (File? image) async {
-                      if (image != null) {
-                        setState(() {
-                          _isUploading = true;
-                        });
+                  //       if (url != null) {
+                  //         vehicleRegisterController.updateRcUrl(url);
+                  //         setState(() {
+                  //           _rc = image;
+                  //           _isUploading = false;
+                  //         });
+                  //       } else {
+                  //         setState(() {
+                  //           _isUploading = false;
+                  //         });
+                  //         // Handle upload failure
+                  //       }
+                  //       _validateForm();
+                  //     }
+                  //   },
+                  //   label: 'RC Front',
+                  //   initialFile: File(vehicleRegisterController.rcUrl.value),
+                  // ),
+                  // CustomSizedBox(height: 10),
+                  // IdentityProof(
+                  //   onFileChosen: (File? image) async {
+                  //     if (image != null) {
+                  //       setState(() {
+                  //         _isUploading = true;
+                  //       });
 
-                        _insurance = image;
-                        final url = await imageUploader.uploadInsuranceImage(
-                            file: image);
+                  //       _insurance = image;
+                  //       final url = await imageUploader.uploadInsuranceImage(
+                  //           file: image);
 
-                        if (url != null) {
-                          vehicleRegisterController.updateInsuranceUrl(url);
-                          setState(() {
-                            _insurance = image;
-                            _isUploading = false;
-                          });
-                        } else {
-                          setState(() {
-                            _isUploading = false;
-                          });
-                          // Handle upload failure
-                        }
-                        _validateForm();
-                      }
-                    },
-                    label: 'RC Back',
-                    initialFile:
-                        File(vehicleRegisterController.insuranceUrl.value),
-                  ),
+                  //       if (url != null) {
+                  //         vehicleRegisterController.updateInsuranceUrl(url);
+                  //         setState(() {
+                  //           _insurance = image;
+                  //           _isUploading = false;
+                  //         });
+                  //       } else {
+                  //         setState(() {
+                  //           _isUploading = false;
+                  //         });
+                  //         // Handle upload failure
+                  //       }
+                   //      _validateForm();
+                  //     }
+                  //   },
+                  //   label: 'RC Back',
+                  //   initialFile:
+                  //       File(vehicleRegisterController.insuranceUrl.value),
+                  // ),
                 ],
               ),
               CustomSizedBox(height: 60),

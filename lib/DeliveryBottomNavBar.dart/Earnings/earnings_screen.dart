@@ -788,13 +788,20 @@ class _EarningsScreenState extends State<EarningsScreen> {
         i = 0;
       });
 
+      // Provider.of<EarningPaginations>(context, listen: false)
+      //     .clearData()
+      //     .then((value) {
+      //   Provider.of<EarningPaginations>(context, listen: false)
+      //       .fetchEarningData(startdate: stdd, endDate: endd);
+      // });
+    });
+
       Provider.of<EarningPaginations>(context, listen: false)
           .clearData()
           .then((value) {
         Provider.of<EarningPaginations>(context, listen: false)
             .fetchEarningData(startdate: stdd, endDate: endd);
       });
-    });
 
     super.initState();
   }
@@ -817,7 +824,7 @@ class _EarningsScreenState extends State<EarningsScreen> {
               borderRadius: BorderRadius.all(Radius.circular(5)),
               color: Colors.white,
             ),
-            width: 300, // Width of the dialog
+           // width: 350, // Width of the dialog
             height: 500, // Height of the dialog
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1129,7 +1136,8 @@ class _EarningsScreenState extends State<EarningsScreen> {
                     print('Scroll ended $i');
                   }
                   return true;
-                }, child: Consumer<EarningPaginations>(
+                }, 
+                child: Consumer<EarningPaginations>(
                   builder: (context, value, child) {
                     if (value.isLoading) {
                       return Center(child: CupertinoActivityIndicator());
@@ -1230,6 +1238,7 @@ class _EarningsScreenState extends State<EarningsScreen> {
                                           ?['orderCode']
                                       ?.toString() ??
                                   '',
+                                  ispaid: value.fetchedDatas[index]["isPaid"]??false,
                               dateText: createdAtString,
                               timeText: createdAtString,
                               tripAmount: tripAmount ?? '',
@@ -1242,7 +1251,8 @@ class _EarningsScreenState extends State<EarningsScreen> {
                       );
                     }
                   },
-                )),
+                )
+                ),
               )
             ])),
       ),

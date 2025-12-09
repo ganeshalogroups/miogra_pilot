@@ -4,8 +4,11 @@ import 'package:miogra_service/Const.dart/const_variables.dart';
 import 'package:miogra_service/Const.dart/time_convert_values.dart';
 import 'package:miogra_service/Controller.dart/HomeController.dart/orderonprocessstatus.dart';
 import 'package:miogra_service/Controller.dart/HomeController.dart/tripscontroller.dart';
+import 'package:miogra_service/DeliveryBottomNavBar.dart/bottom_navigation_bar.dart';
 import 'package:miogra_service/DeliveryBottomNavBar.dart/homesubscreens.dart/backtoorderscreen.dart';
 import 'package:miogra_service/DeliveryBottomNavBar.dart/homesubscreens.dart/droporder.dart';
+import 'package:miogra_service/DeliveryBottomNavBar.dart/homesubscreens.dart/home_screen_multi_trip.dart';
+import 'package:miogra_service/DeliveryBottomNavBar.dart/homesubscreens.dart/homescreen.dart';
 import 'package:miogra_service/DeliveryBottomNavBar.dart/homesubscreens.dart/map_tracking/map_value_controller.dart';
 import 'package:miogra_service/DeliveryBottomNavBar.dart/homesubscreens.dart/reachdroplocation.dart';
 import 'package:miogra_service/DeliveryBottomNavBar.dart/homesubscreens.dart/tripsummaryscreen.dart';
@@ -55,8 +58,10 @@ class OrderUpdateController extends GetxController {
           "assignedToId": UserId
         }),
       );
-
+ print("WWWWWW   ${response.body}");
       if (response.statusCode == 200) {
+
+        print("WWWWWW");
         var result = jsonDecode(response.body);
         String dateCurent = TimerdataService().apiselectdateCallDate();
         print(result);
@@ -79,7 +84,21 @@ class OrderUpdateController extends GetxController {
             backgroundColor: Colors.red,
             colorText: Colors.white,
           );
-        } else {
+        }
+         else if(errorResponse['message'].toString().contains("You Have Already Accecpted another order")){
+           orderErrorMessage.value =
+              "You Have Already Accecpted another order"; // Set the error message
+          Get.snackbar(
+            'Error',
+           errorResponse['message'].toString(),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
+        
+        else {
+
           orderErrorMessage.value =
               "Failed to update order status"; // Handle other errors
         }
@@ -117,9 +136,9 @@ class OrderUpdateController extends GetxController {
           "reachedPickUpedAt": reachedPickup,
         }),
       );
-
+ var result = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        var result = jsonDecode(response.body);
+       
         reachedOrderUpdateData = result;
         orderOnProcessController.orderOnProcessStatus(
             startdate: currentDateGlobal, enddate: currentDateGlobal);
@@ -130,6 +149,18 @@ class OrderUpdateController extends GetxController {
             ));
       } else {
         reachedOrderUpdateData = null;
+
+        if(result["message"]=="Order has been cancelled by customer"){
+         Get.snackbar(
+          "Failed",
+          "${result["message"]}",
+        );
+
+
+           Get.to(() =>  DeliveryBottomNavigation(showBottomSheet: false,));
+        print(result["message"]);}
+         
+          //   
       }
     } catch (e) {
       // print('$e');
@@ -164,7 +195,7 @@ class OrderUpdateController extends GetxController {
           "pickUpedAt": picked,
         }),
       );
-
+var result = jsonDecode(response.body);
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         pickedOrderUpdateData = result;
@@ -179,7 +210,14 @@ class OrderUpdateController extends GetxController {
       } else {
         pickedOrderUpdateData = null;
         print("else error");
-        print("else error  ${response.statusCode}");
+        print("else error  ${result}");
+         if(result["message"]=="Order has been cancelled by customer"){
+         Get.snackbar(
+          "Failed",
+          "${result["message"]}",
+        );
+           Get.to(() =>  DeliveryBottomNavigation(showBottomSheet: false,));
+        print(result["message"]);}
       }
     } catch (e) {
       // print('$e');
@@ -306,8 +344,9 @@ class OrderUpdateController extends GetxController {
       );
         //var r = jsonDecode(response.body);
 //print("RESPONSE $r");
+ var result = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        var result = jsonDecode(response.body);
+       
         deliveredUpdateData = result;
         newTripsController.getNewTrips();
         orderOnProcessController.orderOnProcessStatus(
@@ -318,6 +357,9 @@ class OrderUpdateController extends GetxController {
       } else {
         deliveredUpdateData = null;
          print("API NOT CALLED  ${response.body}");
+          Get.snackbar("Failed to Deliver the order",
+       result["message"]
+        );
       }
     } catch (e) {
       // print('$e');

@@ -95,6 +95,30 @@ print("API NOT WORKING");
     }
   }
 
+  Future<void> updateProfileforTravel(
+     ) async {
+    String? userId = box.read("UserId") ?? '';
+    String? usertoken = box.read("Usertoken") ?? '';
+
+    try {
+      var response = await http.put(
+          Uri.parse('${API.profileUpdateApi}/$UserId'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $usertoken',
+            'userid': userId,
+            'token': usertoken,
+          },
+          body: jsonEncode(<String, dynamic>{
+          "onTarvel":false
+          }));
+
+      
+    } catch (e) {
+      debugPrint('The Error in Update Profile is $e');
+    }
+  }
+
   void clearData() {
     delPartName.value = '';
     emailId.value = '';

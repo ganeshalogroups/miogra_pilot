@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 class CustomTrips extends StatefulWidget {
   final String deliverytext;
   final String orderId;
+  final dynamic ispaid;
   dynamic dateText;
   dynamic timeText;
   final dynamic tripAmount;
@@ -19,6 +20,7 @@ class CustomTrips extends StatefulWidget {
       {super.key,
       required this.deliverytext,
       required this.orderId,
+     this.ispaid,
       required this.dateText,
       required this.timeText,
       required this.tripAmount,
@@ -74,22 +76,50 @@ class _CustomTripsState extends State<CustomTrips> {
                             style: CustomTextStyle.orderblueAmountText),
                       ],
                     ),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text:formattedDate(dateStr: widget.dateText),
-                            style: CustomTextStyle.greyText,
+                    Row(
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text:formattedDate(dateStr: widget.dateText),
+                                style: CustomTextStyle.greyText,
+                              ),
+                              TextSpan(
+                                text: ' | ',
+                                style: CustomTextStyle.identityGreyText,
+                              ),
+                              TextSpan(
+                                  text:formatDate(dateStr: widget.timeText),
+                                  style: CustomTextStyle.greyText)
+                            ],
                           ),
-                          TextSpan(
-                            text: ' | ',
-                            style: CustomTextStyle.identityGreyText,
-                          ),
-                          TextSpan(
-                              text:formatDate(dateStr: widget.timeText),
-                              style: CustomTextStyle.greyText)
-                        ],
-                      ),
+                        ),
+                         Spacer(),
+                          RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Payment :" ,
+                                style:TextStyle(
+      color: Colors.grey,
+      fontSize: 11.5,
+      fontWeight: FontWeight.w500,
+      fontFamily: 'Poppins-Medium')
+                              ),
+                              WidgetSpan(
+        child: SizedBox(width: 8), // space between texts
+      ),
+                              TextSpan(
+                                  text:widget.ispaid? "Settled":"Pending",
+                                  style:TextStyle(
+      color:widget.ispaid? Colors.green : Colors.red,
+      fontSize: 11.5,
+      fontWeight: FontWeight.w500,
+      fontFamily: 'Poppins-Medium'))
+                            ],
+                          ),)
+                      ],
                     ),
                     Divider(),
                     Row(

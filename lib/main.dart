@@ -2841,7 +2841,9 @@ import 'package:miogra_service/AuthScreen.dart/splashscreen.dart';
 import 'package:miogra_service/Const.dart/const_variables.dart';
 import 'package:miogra_service/Const.dart/time_convert_values.dart';
 import 'package:miogra_service/Controller.dart/AuthController.dart/regioncontroller.dart';
+import 'package:miogra_service/Controller.dart/ProfileController/editprofilecontroller.dart';
 import 'package:miogra_service/DeliveryBottomNavBar.dart/ProfileSubScreens.dart/provider/deposite_pagin_provider.dart';
+import 'package:miogra_service/DeliveryBottomNavBar.dart/bottom_navigation_bar.dart';
 import 'package:miogra_service/DeliveryBottomNavBar.dart/homesubscreens.dart/restaurent_bottomsheet.dart';
 import 'package:miogra_service/firebase_options.dart';
 import 'package:miogra_service/notification.dart';
@@ -2867,6 +2869,7 @@ import 'dart:async';
 
 
 String? lastBgMessageId;   // 💾 stores last background message id
+bool isDialogOpen = false;
 
 String? tokenFCM;
 
@@ -3020,7 +3023,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
+ final EditProfileController _profileUpdateController =
+      Get.put(EditProfileController());
 void _showOrderDialog(RemoteMessage message, NotificationController notify) {
    
   // showDialog(
@@ -3043,7 +3047,9 @@ void _showOrderDialog(RemoteMessage message, NotificationController notify) {
   // );
 
 
+ if (isDialogOpen) return; // ⛔ block second dialog
 
+  isDialogOpen = true;
 
              showDialog(
   context: Get.context!,
@@ -3066,9 +3072,12 @@ void _showOrderDialog(RemoteMessage message, NotificationController notify) {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text( 'New Notification',style:CustomTextStyle.normalmediumText),
+            
+          // Text( 'New Notification',style:CustomTextStyle.normalmediumText),
+          Text(message.notification?.title ?? "New Notification",style:CustomTextStyle.normalmediumText),
             const SizedBox(height: 10),
-           Text( 'You have a new message.',style:CustomTextStyle.tripText),
+          // Text( 'You have a new message.',style:CustomTextStyle.tripText),
+           Text(message.notification?.body ?? "You have a new alert",style:CustomTextStyle.tripText),
             const SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -3082,8 +3091,9 @@ void _showOrderDialog(RemoteMessage message, NotificationController notify) {
                     
                  
                 
-                
-                                          Get.to(() =>   RestaurentBottomSheet(
+                if(message.notification?.body =="Time to hit the road again new."){
+               
+    Get.to(() =>   RestaurentBottomSheet(
                               onReachedRestaurant: () {},
                               reachedDelLocation: false,
                               deltype: "",
@@ -3093,6 +3103,12 @@ void _showOrderDialog(RemoteMessage message, NotificationController notify) {
                                 
                               },
                             ));
+                }
+                else{
+                     _profileUpdateController.updateProfileforTravel();
+                   Get.to(() =>  DeliveryBottomNavigation(showBottomSheet: false,));
+                }
+                                      
                   },
                   child: Text(
                     'Ok',
@@ -3122,8 +3138,13 @@ void _showOrderDialog(RemoteMessage message, NotificationController notify) {
         ),
       ),
     ),
-  );}
-);  
+  );
+  
+  }
+).then((_) {
+    isDialogOpen = false; // ✅ reset
+    notify.stopSound();
+  }); 
 }
 
 

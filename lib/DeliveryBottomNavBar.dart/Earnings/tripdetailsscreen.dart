@@ -1314,71 +1314,71 @@ if (commission > 0) {
                 ),
               ),
               SizedBox(height: 20),
-              orderType == 'services'
-                  ? parcelDesignMethod(
-                      showImageOverlay, context, parcelImage, parcelName)
-                  : foodDesignMethod(
-                      orderDetails, orderType, showImageOverlay, context),
-              SizedBox(height: 20),
-              DottedLine(dashColor: Colors.grey.shade500),
-              SizedBox(height: 20),
-              CustomContainer(
-                backgroundColor: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: cost.length,
-                        itemBuilder: (context, index) {
-                          bool isfourthIndex = index == 6;
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomText(
-                                  text: cost[index],
-                                  style: CustomTextStyle.seemore10,
-                                ),
-                                CustomText(
-                                  text: costDetails[index],
-                                  style: isfourthIndex
-                                      ? CustomTextStyle.seemore10
-                                          .copyWith(color: Colors.green)
-                                      : CustomTextStyle.seemore10,
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    DottedLine(dashColor: Colors.grey.shade500),
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomText(
-                            text: 'Grand Total',
-                            style: CustomTextStyle.seemore10,
-                          ),
-                          CustomText(
-                            text: '₹$grandTotal',
-                            style: CustomTextStyle.itemBoldText,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 35),
+              // orderType == 'services'
+              //     ? parcelDesignMethod(
+              //         showImageOverlay, context, parcelImage, parcelName)
+              //     : foodDesignMethod(
+              //         orderDetails, orderType, showImageOverlay, context),
+              // SizedBox(height: 20),
+             // DottedLine(dashColor: Colors.grey.shade500),
+              //SizedBox(height: 20),
+              // CustomContainer(
+              //   backgroundColor: Colors.white,
+              //   borderRadius: BorderRadius.circular(15),
+              //   child: Column(
+              //     children: [
+              //       SizedBox(
+              //         child: ListView.builder(
+              //           shrinkWrap: true,
+              //           physics: NeverScrollableScrollPhysics(),
+              //           itemCount: cost.length,
+              //           itemBuilder: (context, index) {
+              //             bool isfourthIndex = index == 6;
+              //             return Padding(
+              //               padding: const EdgeInsets.all(8.0),
+              //               child: Row(
+              //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //                 children: [
+              //                   CustomText(
+              //                     text: cost[index],
+              //                     style: CustomTextStyle.seemore10,
+              //                   ),
+              //                   CustomText(
+              //                     text: costDetails[index],
+              //                     style: isfourthIndex
+              //                         ? CustomTextStyle.seemore10
+              //                             .copyWith(color: Colors.green)
+              //                         : CustomTextStyle.seemore10,
+              //                   ),
+              //                 ],
+              //               ),
+              //             );
+              //           },
+              //         ),
+              //       ),
+              //       SizedBox(height: 20),
+              //       DottedLine(dashColor: Colors.grey.shade500),
+              //       SizedBox(height: 20),
+              //       Padding(
+              //         padding: const EdgeInsets.all(8.0),
+              //         child: Row(
+              //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //           children: [
+              //             CustomText(
+              //               text: 'Grand Total',
+              //               style: CustomTextStyle.seemore10,
+              //             ),
+              //             CustomText(
+              //               text: '₹$grandTotal',
+              //               style: CustomTextStyle.itemBoldText,
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // SizedBox(height: 35),
             ],
           ),
         ),

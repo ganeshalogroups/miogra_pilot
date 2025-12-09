@@ -572,6 +572,7 @@ class _RestaurentBottomSheetState extends State<RestaurentBottomSheet> {
                     print("deliveryman offline");
                   } else {
                     if (reachedRestaurant || widget.reachedDelLocation) {
+                         print("deliveryman bla bla");
                       await orderUpdateController.updateReachedRestaurentStatus(
                         tripData['_id'].toString(),
                         DateTime.now(),

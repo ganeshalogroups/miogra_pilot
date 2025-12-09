@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:miogra_service/Const.dart/const_colors.dart';
+import 'package:miogra_service/Const.dart/time_convert_values.dart';
 import 'package:miogra_service/Controller.dart/HomeController.dart/orderonprocessstatus.dart';
 import 'package:miogra_service/Controller.dart/HomeController.dart/tripscontroller.dart';
 import 'package:miogra_service/Controller.dart/ProfileController/activestatusupdate.dart';
@@ -69,6 +70,12 @@ late TabController _tabController;
   @override
   void initState() {
     super.initState();
+
+   
+   
+
+
+
     profilScreeenController.getProfile();
     _tabController = TabController(length: 3, vsync: this);
     _isMounted = true;
@@ -95,6 +102,15 @@ late TabController _tabController;
           }
           orderid = tripData['orderId'] ?? '';
         }
+      });
+
+
+         Timer(Duration(seconds: 0), () {
+        print(TimerdataService().apiselectdateCallDate());
+        String dateCurent = TimerdataService().apiselectdateCallDate();
+        newTripsController.getNewTrips(
+            startdate: dateCurent == "null" ? "" : dateCurent,
+            endDate: dateCurent == "null" ? "" : dateCurent);
       });
     });
     //newTripsController.getNewTrips();
@@ -185,7 +201,7 @@ late TabController _tabController;
     final PictureRecorder pictureRecorder = PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
 
-    final Paint paint = Paint()..color = Color.fromARGB(255, 248, 90, 5);
+    final Paint paint = Paint()..color = Colors.deepPurpleAccent;
     canvas.drawCircle(
         Offset(markerSize / 4, markerSize / 4), markerSize / 4, paint);
 
@@ -264,6 +280,7 @@ late TabController _tabController;
 
               /// **Second SliverAppBar - Tab Bar**
               SliverAppBar(
+                automaticallyImplyLeading: false,
                 backgroundColor: Customcolors.decorationbackground,
                 elevation: 0,
                 pinned: true,

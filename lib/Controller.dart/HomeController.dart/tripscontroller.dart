@@ -43,7 +43,7 @@ class NewTripsController extends GetxController {
             'Content-Type': 'application/json',
             'userId': UserId,
           });
-      print("get trip id respo ${response.statusCode}");
+      print("get trip id  ${response.statusCode}");
       print(
           "new orders:${API.getNewTripsApi}$parentAdminId&fromDate=$startdate&toDate=$endDate");
 
@@ -100,10 +100,12 @@ class NewTripsController extends GetxController {
 
   var isdataLoading = false.obs;
   var newTripsbyid = <dynamic>[].obs;
+
   Future<void> getTripsbyId(String id) async {
+    
     print("___________SS____________");
-    print(" USER ID $userId           ID  $id");
-    print(" USER TOKEN $usertoken        ");
+    print("USER ID $userId           ID  $id");
+    print("USER TOKEN $usertoken        ");
     try {
       isdataLoading.value = true;
       final response =
@@ -112,8 +114,12 @@ class NewTripsController extends GetxController {
         'Content-Type': 'application/json',
         'userId': userId
       });
-      print("get trip id respo ${response.statusCode}");
+      print("get id respo ");
+
+      print("asasa");
+
       print("${API.getTripsbyidApi}$id");
+
       if (response.statusCode == 200) {
         print("tripppp${API.getTripsbyidApi}$id");
         var result = jsonDecode(response.body);
@@ -127,8 +133,10 @@ class NewTripsController extends GetxController {
             print( [result['data']]);
 
         }
-      } else {
+      } 
+      else {
         newTripsbyid == [];
+          print("DATA IS ELSE");
         throw Exception('Failed to load New Trips by id');
       }
     } catch (e) {
