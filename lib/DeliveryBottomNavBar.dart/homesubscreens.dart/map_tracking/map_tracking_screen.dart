@@ -288,7 +288,8 @@ class _MapTrackingScreenState extends State<MapTrackingScreen> {
         Polyline(
           polylineId: PolylineId('route'),
           points: polylinePoints,
-          color: Color.fromARGB(255, 248, 90, 5),
+       //   color: Color.fromARGB(255, 248, 90, 5),
+       color: Color(0xFF583081),
           width: 4,
         ),
       );
@@ -327,7 +328,8 @@ class _MapTrackingScreenState extends State<MapTrackingScreen> {
             Polyline(
               polylineId: PolylineId('route'),
               points: polylinePoints,
-              color: Color.fromARGB(255, 248, 90, 5),
+              // color: Color.fromARGB(255, 248, 90, 5),
+              color:Color(0xFF583081),
               width: 4,
             ),
           );
@@ -412,7 +414,7 @@ class _MapTrackingScreenState extends State<MapTrackingScreen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(mapValueController.isAccept.value.toString()),
+//Text(mapValueController.isAccept.value.toString()),
         Expanded(
           child: GoogleMap(
             initialCameraPosition: CameraPosition(

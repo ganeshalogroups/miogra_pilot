@@ -201,7 +201,7 @@ late TabController _tabController;
     final PictureRecorder pictureRecorder = PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
 
-    final Paint paint = Paint()..color = Colors.deepPurpleAccent;
+    final Paint paint = Paint()..color = Color(0xFF583081);
     canvas.drawCircle(
         Offset(markerSize / 4, markerSize / 4), markerSize / 4, paint);
 
@@ -248,6 +248,7 @@ late TabController _tabController;
             return [
               /// **First SliverAppBar - Google Map**
               SliverAppBar(
+                  automaticallyImplyLeading: false,
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 elevation: 0,
                 pinned: false,

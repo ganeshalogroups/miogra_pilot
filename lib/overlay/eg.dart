@@ -81,7 +81,7 @@ class _MessangerChatHeadState extends State<MessangerChatHead> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       image:
-                          AssetImage('assets/images/deliverypartnerlogo.png'),
+                          AssetImage('assets/images/1024 fill.png'),
                       fit: BoxFit.cover,
                     ),
                   ),
